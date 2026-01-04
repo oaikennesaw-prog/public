@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Bill of Rights · Interactive Quiz (v5)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root { --bg:#0b132b; --panel:#0d1b2a; --ink:#1b1b1b; --accent:#5bc0be; --accent2:#2a9d8f; --accent3:#ffd166; --danger:#e76f51; --ok:#2a9d8f; --muted:#a8c0d8; }
+    html { scroll-behavior: smooth; }
+    body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, sans-serif; background: var(--bg); color:#e8eef7; }
+
+    .sticky { position: sticky; top:0; z-index:1000; background:#0d1b2a; border-bottom:2px solid var(--accent); }
+    .nav { display:flex; flex-wrap:wrap; gap:.6rem; align-items:center; padding:.6rem 1rem; }
+    .nav a { background:#14243f; color:#e8eef7; border:1px solid #2a3a5f; border-radius:8px; padding:.4rem .7rem; font-weight:700; text-decoration:none; }
+    .nav a.primary { background: var(--accent); color:#0b132b; border-color:var(--accent); }
+
+    header { padding:1rem 1.5rem; background:#0d1b2a; border-bottom:2px solid #2a3a5f; }
+    header h1 { margin:0 0 .2rem; }
+    header p { margin:.2rem 0; max-width:95ch; }
+
+    main { display:grid; gap:1rem; padding:1rem; }
+
+    .panel { background:#0d1b2a; border:1px solid #2a3a5f; border-radius:12px; padding:1rem; }
+    .grid3 { display:grid; gap:.6rem; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+    .choice { background:#10203a; color:#e8eef7; border:1px solid #2a3a5f; border-radius:10px; padding:.6rem .7rem; display:flex; align-items:center; gap:.5rem; }
+    .choice input { width:1.2rem; height:1.2rem; }
+    .choice.correct { outline:3px solid var(--ok); }
+    .choice.incorrect { outline:3px solid var(--danger); }
+
+    .controls { display:flex; gap:.6rem; align-items:center; flex-wrap:wrap; margin-top:.8rem; }
+    button { background: var(--accent); border:none; color:#0b132b; padding:.5rem .8rem; border-radius:8px; font-weight:700; cursor:pointer; }
+    button.secondary { background: var(--accent2); }
+    button.danger { background: var(--danger); color:#fff; }
+    .score { margin-left:auto; font-weight:800; }
+    .counter { font-size:0.95rem; color:#a8c0d8; }
+
+    .hidden { display:none; }
+
+    /* Link panel after Part 1 */
+    .links-panel { background: #0d1b2a; border:1px solid #2a3a5f; border-radius:12px; padding:1rem; margin-top:1rem; }
+    .links-panel h3 { margin:.2rem 0 .5rem; }
+    .linkgrid { display:grid; gap:.5rem; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+    .alink { display:inline-block; background: var(--accent3); color:#0b132b; border:1px solid #e5c55c; border-radius:8px; padding:.4rem .6rem; font-weight:800; text-decoration:none; }
+    .descriptor { display:block; font-size:0.9rem; color:#cbd6e6; margin-top:.25rem; }
+    .group { margin-top:1rem; }
+    .group h4 { margin:.3rem 0 .5rem; }
+
+    /* Part 2 MCQ styling */
+    .scenario { background:#10203a; border:1px solid #2a3a5f; border-radius:10px; padding:.8rem; }
+    .scenario h4 { margin:.2rem 0 .4rem; }
+    .options { display:grid; gap:.4rem; margin-top:.4rem; }
+    .option { background:#0e2038; border:1px solid #2a3a5f; border-radius:8px; padding:.45rem .6rem; display:flex; gap:.5rem; align-items:center; }
+    .option.correct { outline:3px solid var(--ok); }
+    .option.incorrect { outline:3px solid var(--danger); }
+    .option label { flex:1; cursor:pointer; }
+
+    footer { margin: 0 1rem 1rem; background:#0d1b2a; border:1px solid #2a3a5f; border-radius:12px; padding:0.8rem; }
+    .exitbar { display:flex; flex-wrap:wrap; gap:.6rem; align-items:center; }
+    .exitbar input[type="url"] { flex: 1 1 280px; background:#0e1a31; color:#e8eef7; border:1px solid #2a3a5f; border-radius:8px; padding:0.5rem; }
+  </style>
+</head>
+<body>
+  <div class="sticky">
+    <nav class="nav">
+      <a href="#part1" class="primary">Part 1: Identify the Bill of Rights</a>
+      <a href="#part2">Part 2: Scenario Quiz</a>
+      <a href="#top">Back to Top</a>
+    </nav>
+  </div>
+
+  <header id="top">
+    <h1>Bill of Rights · Interactive Quiz</h1>
+    <p>Part 1: Select the 10 amendments that make up the Bill of Rights (mixed; no numbers shown). Part 2: Answer multiple-choice scenarios (unlocked after Part 1).</p>
+  </header>
+
+  <main>
+    <!-- Part 1: Selection game -->
+    <section id="part1" class="panel" aria-label="Part 1 — Identify the Bill of Rights">
+      <h2>Part 1 · Choose the 10 Amendments in the Bill of Rights</h2>
+      <p>Select ten items from the mixed list below.</p>
+      <p class="counter">You selected <span id="selectedCount">0</span> of 10.</p>
+      <div class="grid3" id="choices">
+        <!-- Mixed Bill of Rights items (no numbers in labels) -->
+        <label class="choice"><input type="checkbox" data-id="am5"/> Due process, self-incrimination, double jeopardy</label>
+        <label class="choice"><input type="checkbox" data-id="am3"/> No quartering of soldiers</label>
+        <label class="choice"><input type="checkbox" data-id="am1"/> Freedoms of religion, speech, press, assembly, petition</label>
+        <label class="choice"><input type="checkbox" data-id="am8"/> No excessive bail or cruel and unusual punishment</label>
+        <label class="choice"><input type="checkbox" data-id="am7"/> Right to jury trial in civil cases</label>
+        <label class="choice"><input type="checkbox" data-id="am4"/> Protection from unreasonable searches and seizures</label>
+        <label class="choice"><input type="checkbox" data-id="am9"/> Rights retained by the people (unenumerated rights)</label>
+        <label class="choice"><input type="checkbox" data-id="am2"/> Right to keep and bear arms</label>
+        <label class="choice"><input type="checkbox" data-id="am6"/> Rights of accused in criminal prosecutions (speedy trial, counsel)</label>
+        <label class="choice"><input type="checkbox" data-id="am10"/> Powers reserved to the states and the people</label>
+
+        <!-- Failed or not-BOR items (should NOT be selected) -->
+        <label class="choice"><input type="checkbox" data-id="era"/> Equal Rights Amendment (ERA)</label>
+        <label class="choice"><input type="checkbox" data-id="titles"/> Titles of Nobility Amendment</label>
+        <label class="choice"><input type="checkbox" data-id="childlab"/> Child Labor Amendment</label>
+        <label class="choice"><input type="checkbox" data-id="apportion"/> Congressional Apportionment Amendment</label>
+        <label class="choice"><input type="checkbox" data-id="flag"/> Flag Desecration Amendment</label>
+        <label class="choice"><input type="checkbox" data-id="dcvote"/> D.C. Voting Rights Amendment</label>
+      </div>
+      <div class="controls">
+        <button class="secondary" onclick="checkSelection()">Check answers</button>
+        <button onclick="resetSelection()">Reset</button>
+        <button class="danger" onclick="clearSelection()">Clear all</button>
+        <span id="scoreSelection" class="score">Score: –</span>
+      </div>
+
+      <!-- Link panel appears after Part 1 is checked -->
+      <div id="linksPanel" class="links-panel hidden">
+        <h3>Explore the Documents</h3>
+        <p>Authoritative resources from the National Archives and other official sites. Links open in a new tab.</p>
+
+        <div class="group">
+          <h4>Ratified Amendments (Bill of Rights)</h4>
+          <div class="linkgrid">
+            <div>
+              <a class="alink" target="_blank" rel="noopener" href="https://www.archives.gov/founding-docs/bill-of-rights">Bill of Rights — National Archives</a>
+              <span class="descriptor">Overview of the first ten amendments and their significance.</span>
+            </div>
+            <div>
+              <a class="alink" target="_blank" rel="noopener" href="https://www.archives.gov/founding-docs/bill-of-rights-transcript">Bill of Rights — Transcription</a>
+              <span class="descriptor">Official text of the Joint Resolution and amendments I–X.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h4>Proposed / Unratified Amendments</h4>
+          <div class="linkgrid">
+            <div>
+              <a class="alink" target="_blank" rel="noopener" href="https://prologue.blogs.archives.gov/2020/01/30/unratified-amendments-titles-of-nobility/">Titles of Nobility Amendment — National Archives blog</a>
+              <span class="descriptor">Explains the proposal to strip citizenship for accepting foreign titles.</span>
+            </div>
+            <div>
+              <a class="alink" target="_blank" rel="noopener" href="https://press-pubs.uchicago.edu/founders/documents/bill_of_rightss12.html">Congressional Apportionment (Article the First) — Founders’ Constitution (UChicago)</a>
+              <span class="descriptor">Context and text for the early apportionment formula (still pending).</span>
+            </div>
+            <div>
+              <a class="alink" target="_blank" rel="noopener" href="https://www.archives.gov/milestone-documents/keating-owen-child-labor-act">Child Labor — National Archives milestone</a>
+              <span class="descriptor">Background on federal child labor efforts that led to a proposed amendment.</span>
+            </div>
+            <div>
+              <a class="alink" target="_blank" rel="noopener" href="https://www.archives.gov/women/era">Equal Rights Amendment (ERA) — National Archives</a>
+              <span class="descriptor">Official overview of the ERA’s purpose and ratification history.</span>
+            </div>
+            <div>
+              <a class="alink" target="_blank" rel="noopener" href="https://prologue.blogs.archives.gov/2020/06/17/unratified-amendments-dc-voting-rights/">D.C. Voting Rights Amendment — National Archives blog</a>
+              <span class="descriptor">Explains the proposal to treat DC like a state for representation.</span>
+            </div>
+            <div>
+              <a class="alink" target="_blank" rel="noopener" href="https://www.congress.gov/bill/119th-congress/house-joint-resolution/101">Flag Desecration Amendment — Congress.gov</a>
+              <span class="descriptor">Official tracking page for recent proposals to allow Congress to ban desecration.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Part 2: MCQ scenarios (hidden until Part 1 is checked) -->
+    <section id="part2" class="panel hidden" aria-label="Part 2 — Scenario Quiz">
+      <h2>Part 2 · Scenario Quiz (Multiple Choice)</h2>
+      <p>Read each scenario and choose the amendment that best applies.</p>
+      <div id="scenarioList"></div>
+      <div class="controls" style="margin-top:1rem;">
+        <button class="secondary" onclick="checkMCQ()">Check answers</button>
+        <button onclick="resetMCQ()">Reset</button>
+        <button class="danger" onclick="clearMCQ()">Clear all</button>
+        <span id="scoreMCQ" class="score">Score: –</span>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="exitbar">
+      <input id="returnUrl" type="url" placeholder="Paste the site to return to" />
+      <button id="saveUrl" class="ghost">Save return link</button>
+      <button id="goBack" class="secondary">Return to saved site</button>
+    </div>
+  </footer>
+
+  <script>
+    // ===== Part 1 =====
+    const BOR_SET = new Set(['am1','am2','am3','am4','am5','am6','am7','am8','am9','am10']);
+    function updateSelectedCount(){ const c = document.querySelectorAll('#choices input[type="checkbox"]:checked').length; document.getElementById('selectedCount').textContent = c; }
+    document.querySelectorAll('#choices input[type="checkbox"]').forEach(b=>{ b.addEventListener('change', updateSelectedCount); });
+
+    function checkSelection(){
+      const boxes = document.querySelectorAll('#choices input[type="checkbox"]');
+      let correct=0, totalChecked=0;
+      boxes.forEach(b=>{
+        const wrapper = b.parentElement;
+        wrapper.classList.remove('correct','incorrect');
+        const id = b.getAttribute('data-id');
+        if(b.checked){
+          totalChecked++;
+          if(BOR_SET.has(id)){
+            wrapper.classList.add('correct'); correct++;
+          } else {
+            wrapper.classList.add('incorrect');
+          }
+        }
+      });
+      document.getElementById('scoreSelection').textContent = 'Score: '+correct+'/'+BOR_SET.size + (totalChecked!==BOR_SET.size? ' (choose 10)': '');
+      // Unlock links panel and Part 2
+      document.getElementById('linksPanel').classList.remove('hidden');
+      document.getElementById('part2').classList.remove('hidden');
+      // Build scenarios with randomized choices if not already built
+      if(!document.getElementById('scenarioList').dataset.ready){ buildScenarios(); }
+    }
+    function resetSelection(){ document.querySelectorAll('#choices .choice').forEach(c=>c.classList.remove('correct','incorrect')); document.getElementById('scoreSelection').textContent='Score: –'; }
+    function clearSelection(){ document.querySelectorAll('#choices input[type="checkbox"]').forEach(b=>b.checked=false); resetSelection(); updateSelectedCount(); }
+
+    // ===== Part 2 (MCQ) =====
+    const AMENDMENT_TEXT = {
+      am1:'1st Amendment — Speech, Religion, Press, Assembly, Petition',
+      am2:'2nd Amendment — Bear Arms',
+      am3:'3rd Amendment — No Quartering',
+      am4:'4th Amendment — Searches & Seizures',
+      am5:'5th Amendment — Due Process, Self-Incrimination',
+      am6:'6th Amendment — Criminal Trial Rights',
+      am7:'7th Amendment — Civil Jury',
+      am8:'8th Amendment — Bail & Punishment',
+      am9:'9th Amendment — Unenumerated Rights',
+      am10:'10th Amendment — Reserved Powers'
+    };
+
+    const SCENARIOS = [
+      { id:'sc1', text:'A journalist is jailed for criticizing a policy.', correct:'am1', distractors:['am5','am6'] },
+      { id:'sc2', text:'Police search a home without a warrant.', correct:'am4', distractors:['am5','am6'] },
+      { id:'sc3', text:'A resident is forced to house soldiers during peacetime.', correct:'am3', distractors:['am4','am9'] },
+      { id:'sc4', text:'A defendant is denied a lawyer and a speedy public trial.', correct:'am6', distractors:['am5','am8'] },
+      { id:'sc5', text:'A judge imposes an excessive fine and cruel punishment.', correct:'am8', distractors:['am7','am10'] },
+      { id:'sc6', text:'A person refuses to testify, citing self-incrimination.', correct:'am5', distractors:['am6','am1'] },
+      { id:'sc7', text:'Neighbors lawfully keep firearms as part of a militia.', correct:'am2', distractors:['am9','am10'] },
+      { id:'sc8', text:'A civil case demands a jury trial over property damages.', correct:'am7', distractors:['am6','am8'] },
+      { id:'sc9', text:'Citizens claim rights not explicitly listed in the Constitution.', correct:'am9', distractors:['am1','am10'] },
+      { id:'sc10', text:'A state asserts powers not delegated to the federal government.', correct:'am10', distractors:['am1','am9'] }
+    ];
+
+    function shuffle(arr){ for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; } return arr; }
+
+    function buildScenarios(){
+      const container = document.getElementById('scenarioList');
+      container.innerHTML = '';
+      SCENARIOS.forEach((sc, idx)=>{
+        const wrap = document.createElement('div'); wrap.className='scenario'; wrap.id='q_'+sc.id;
+        const title = document.createElement('h4'); title.textContent = 'Scenario '+(idx+1);
+        const p = document.createElement('p'); p.textContent = sc.text;
+        const opts = document.createElement('div'); opts.className='options';
+        const choices = shuffle([sc.correct, sc.distractors[0], sc.distractors[1]]);
+        choices.forEach((amId,k)=>{
+          const opt = document.createElement('div'); opt.className='option';
+          const input = document.createElement('input'); input.type='radio'; input.name='mc_'+sc.id; input.value=amId; input.id='mc_'+sc.id+'_'+k;
+          const label = document.createElement('label'); label.setAttribute('for', input.id); label.textContent = AMENDMENT_TEXT[amId];
+          opt.appendChild(input); opt.appendChild(label); opts.appendChild(opt);
+        });
+        wrap.appendChild(title); wrap.appendChild(p); wrap.appendChild(opts); container.appendChild(wrap);
+      });
+      container.dataset.ready = 'true';
+    }
+
+    function checkMCQ(){
+      let correct=0, total=SCENARIOS.length;
+      SCENARIOS.forEach(sc=>{
+        const selected = document.querySelector('input[name="mc_'+sc.id+'"]:checked');
+        const qWrap = document.getElementById('q_'+sc.id);
+        qWrap.querySelectorAll('.option').forEach(o=>o.classList.remove('correct','incorrect'));
+        if(selected){
+          const optDiv = selected.parentElement;
+          if(selected.value===sc.correct){ optDiv.classList.add('correct'); correct++; } else { optDiv.classList.add('incorrect'); }
+        }
+      });
+      document.getElementById('scoreMCQ').textContent='Score: '+correct+'/'+total;
+    }
+
+    function resetMCQ(){
+      document.getElementById('scoreMCQ').textContent='Score: –';
+      document.querySelectorAll('#scenarioList .option').forEach(o=>o.classList.remove('correct','incorrect'));
+    }
+
+    function clearMCQ(){
+      resetMCQ();
+      document.querySelectorAll('#scenarioList input[type="radio"]').forEach(r=>{ r.checked=false; });
+    }
+
+    // Footer return link
+    const urlInput=document.getElementById('returnUrl'); const saveBtn=document.getElementById('saveUrl'); const goBackBtn=document.getElementById('goBack'); const saved=localStorage.getItem('constitution:returnUrl'); if(saved) urlInput.value=saved; saveBtn.addEventListener('click', ()=>{ const u=urlInput.value.trim(); if(!u){ alert('Paste a valid URL'); return;} try{ new URL(u);}catch(e){ alert('Include https://'); return;} localStorage.setItem('constitution:returnUrl', u); alert('Return link saved.'); }); goBackBtn.addEventListener('click', ()=>{ const u=localStorage.getItem('constitution:returnUrl'); if(u) window.location.href=u; else alert('No saved site yet'); });
+  </script>
+</body>
+</html>

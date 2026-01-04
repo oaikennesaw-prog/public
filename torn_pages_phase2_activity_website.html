@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Alien Archivists · Phase II (Flip Cards v9)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root { --bg:#0b132b; --panel:#1c2541; --ink:#1b1b1b; --accent:#5bc0be; --accent2:#2a9d8f; }
+    body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, sans-serif; background: var(--bg); color:#e8eef7; }
+
+    header { padding:1rem 1.5rem; background:#0d1b2a; border-bottom:2px solid var(--accent); }
+    header p { margin:0; max-width:90ch; }
+
+    main { display:grid; gap:1rem; padding:1rem; }
+
+    .cards { display:grid; gap:1rem; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+    .card { perspective:1000px; }
+
+    .card-inner { position:relative; width:100%; height:380px; transform-style: preserve-3d; transition: transform .6s; }
+    .card-inner.is-flipped { transform: rotateY(180deg); }
+
+    .face { position:absolute; inset:0; backface-visibility:hidden; border-radius:10px; box-shadow:0 10px 20px rgba(0,0,0,0.25); background: url(data:image/jpeg;base64,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); background-repeat:repeat-x; background-size:auto 100%; background-position:center; color:var(--ink); padding:72px 1.2rem 1rem; overflow:auto; }
+
+    .front, .back { display:flex; flex-direction:column; gap:.6rem; }
+    .back { transform: rotateY(180deg); }
+
+    .badge { position:absolute; left:12px; top:12px; min-width:36px; height:36px; padding:0 10px; border-radius:18px; display:grid; place-items:center; font-weight:900; color:#0b132b; background: var(--accent); box-shadow: 0 2px 8px rgba(0,0,0,0.25); }
+
+    .title, .section h4 { display:none; }
+    .excerpt, .section p { font-size:1rem; line-height:1.6; }
+
+    .card-actions { display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center; margin-top:auto; }
+    button { background: var(--accent); border:none; color:#0b132b; padding:0.5rem 0.8rem; border-radius:8px; font-weight:700; cursor:pointer; }
+    button.secondary { background: var(--accent2); color:#0b132b; }
+
+    footer { margin: 0 1rem 1rem; background:#0d1b2a; border:1px solid #2a3a5f; border-radius:12px; padding:0.8rem; }
+    .exitbar { display:grid; grid-template-columns: 1fr; gap:0.6rem; align-items:center; }
+    .row { display:flex; flex-wrap:wrap; gap:0.6rem; align-items:center; }
+    .exitbar input[type="url"] { flex: 1 1 280px; background:#0e1a31; color:#e8eef7; border:1px solid #2a3a5f; border-radius:8px; padding:0.5rem; }
+    .help { font-size:0.9rem; color:#a8c0d8; }
+    .fulltext { margin-top:0.6rem; }
+    .fulltext a { color:#5bc0be; font-weight:700; }
+    .exitbar label { font-size:.9rem; color:#a8c0d8; }
+  </style>
+</head>
+<body>
+  <header>
+    <p><strong>Instructions:</strong> Please review the articles below. Make sure you flip them, as on the back of each excerpt is analysis.</p>
+  </header>
+
+  <main>
+    <section aria-label="Flip Cards" class="panel">
+      <div class="cards">
+        <article class="card" id="intro" aria-labelledby="intro-title">
+          <div class="card-inner" aria-expanded="false">
+            <div class="face front" tabindex="0" onclick="toggleFlip('intro')" onkeypress="if(event.key==='Enter' || event.key===' ') toggleFlip('intro')">
+              <div class="badge">Intro</div>
+              <h3 id="intro-title" class="title"></h3>
+              <p class="excerpt">“Articles of Confederation and perpetual Union between the States of Newhampshire, Massachusetts-bay, Rhodeisland and Providence Plantations, Connecticut, New York, New Jersey, Pennsylvania, Delaware, Maryland, Virginia, North Carolina, South Carolina, and Georgia.”</p>
+              <div class="card-actions">
+                <button class="secondary" onclick="toggleFlip('intro');event.stopPropagation();">Flip</button>
+              </div>
+            </div>
+            <div class="face back" tabindex="0" onclick="toggleFlip('intro')" onkeypress="if(event.key==='Enter' || event.key===' ') toggleFlip('intro')">
+              <div class="badge">Intro</div>
+              <div class="section">
+                <p>The Articles start with a list of names of the states. This observation suggests that the Articles place greater emphasis on the individual states rather than on the authority of the central government.</p>
+              </div>
+              <div class="card-actions">
+                <button class="secondary" onclick="toggleFlip('intro');event.stopPropagation();">Flip back</button>
+              </div>
+            </div>
+          </div>
+        </article>
+        <article class="card" id="art1" aria-labelledby="art1-title">
+          <div class="card-inner" aria-expanded="false">
+            <div class="face front" tabindex="0" onclick="toggleFlip('art1')" onkeypress="if(event.key==='Enter' || event.key===' ') toggleFlip('art1')">
+              <div class="badge">I</div>
+              <h3 id="art1-title" class="title"></h3>
+              <p class="excerpt">The stile of this confederacy shall be ‘‘The United States of America”.</p>
+              <div class="card-actions">
+                <button class="secondary" onclick="toggleFlip('art1');event.stopPropagation();">Flip</button>
+              </div>
+            </div>
+            <div class="face back" tabindex="0" onclick="toggleFlip('art1')" onkeypress="if(event.key==='Enter' || event.key===' ') toggleFlip('art1')">
+              <div class="badge">I</div>
+              <div class="section">
+                <p>The Articles of Confederation named the country "The United States of America" and formed its first government.</p>
+              </div>
+              <div class="card-actions">
+                <button class="secondary" onclick="toggleFlip('art1');event.stopPropagation();">Flip back</button>
+              </div>
+            </div>
+          </div>
+        </article>
+        <article class="card" id="art3" aria-labelledby="art3-title">
+          <div class="card-inner" aria-expanded="false">
+            <div class="face front" tabindex="0" onclick="toggleFlip('art3')" onkeypress="if(event.key==='Enter' || event.key===' ') toggleFlip('art3')">
+              <div class="badge">III</div>
+              <h3 id="art3-title" class="title"></h3>
+              <p class="excerpt">The said states hereby severally enter into a firm league of friendship with each other…</p>
+              <div class="card-actions">
+                <button class="secondary" onclick="toggleFlip('art3');event.stopPropagation();">Flip</button>
+              </div>
+            </div>
+            <div class="face back" tabindex="0" onclick="toggleFlip('art3')" onkeypress="if(event.key==='Enter' || event.key===' ') toggleFlip('art3')">
+              <div class="badge">III</div>
+              <div class="section">
+                <p>The opening of Article III characterizes the central government as a "league of friendship" and portrays it as an alliance intended to provide mutual support, while allowing each state to independently manage its internal affairs.</p>
+              </div>
+              <div class="card-actions">
+                <button class="secondary" onclick="toggleFlip('art3');event.stopPropagation();">Flip back</button>
+              </div>
+            </div>
+          </div>
+        </article>
+        <article class="card" id="art2" aria-labelledby="art2-title">
+          <div class="card-inner" aria-expanded="false">
+            <div class="face front" tabindex="0" onclick="toggleFlip('art2')" onkeypress="if(event.key==='Enter' || event.key===' ') toggleFlip('art2')">
+              <div class="badge">II</div>
+              <h3 id="art2-title" class="title"></h3>
+              <p class="excerpt">Each state retains its sovereignty, freedom and independence, and every power, jurisdiction and right, which is not by this confederation expressly delegated to the United States in Congress assembled.</p>
+              <div class="card-actions">
+                <button class="secondary" onclick="toggleFlip('art2');event.stopPropagation();">Flip</button>
+              </div>
+            </div>
+            <div class="face back" tabindex="0" onclick="toggleFlip('art2')" onkeypress="if(event.key==='Enter' || event.key===' ') toggleFlip('art2')">
+              <div class="badge">II</div>
+              <div class="section">
+                <p>Article II outlines the central theme of the document, emphasizing that primary power and authority are reserved for the states. It stipulates that any powers not explicitly granted to the central government remain with the states.</p>
+              </div>
+              <div class="card-actions">
+                <button class="secondary" onclick="toggleFlip('art2');event.stopPropagation();">Flip back</button>
+              </div>
+            </div>
+          </div>
+        </article>
+        <article class="card" id="art11" aria-labelledby="art11-title">
+          <div class="card-inner" aria-expanded="false">
+            <div class="face front" tabindex="0" onclick="toggleFlip('art11')" onkeypress="if(event.key==='Enter' || event.key===' ') toggleFlip('art11')">
+              <div class="badge">XI</div>
+              <h3 id="art11-title" class="title"></h3>
+              <p class="excerpt">Canada acceding to this confederation, and joining in the measures of the united states, shall be admitted into, and entitled to all the advantages of this union: but no other colony shall be admitted into the same, unless such admission be agreed to by nine states.</p>
+              <div class="card-actions">
+                <button class="secondary" onclick="toggleFlip('art11');event.stopPropagation();">Flip</button>
+              </div>
+            </div>
+            <div class="face back" tabindex="0" onclick="toggleFlip('art11')" onkeypress="if(event.key==='Enter' || event.key===' ') toggleFlip('art11')">
+              <div class="badge">XI</div>
+              <div class="section">
+                <p>Canada received pre-approved admission as the colonists aimed to unify North American territory and establish a "league of friendship" to safeguard against British advances from the north.</p>
+              </div>
+              <div class="card-actions">
+                <button class="secondary" onclick="toggleFlip('art11');event.stopPropagation();">Flip back</button>
+              </div>
+            </div>
+          </div>
+        </article>
+        <article class="card" id="art4_ffc" aria-labelledby="art4_ffc-title">
+          <div class="card-inner" aria-expanded="false">
+            <div class="face front" tabindex="0" onclick="toggleFlip('art4_ffc')" onkeypress="if(event.key==='Enter' || event.key===' ') toggleFlip('art4_ffc')">
+              <div class="badge">IV</div>
+              <h3 id="art4_ffc-title" class="title"></h3>
+              <p class="excerpt">Full faith and credit shall be given in each of these states to the records, acts and judicial proceedings of the courts and magistrates of every other state.</p>
+              <div class="card-actions">
+                <button class="secondary" onclick="toggleFlip('art4_ffc');event.stopPropagation();">Flip</button>
+              </div>
+            </div>
+            <div class="face back" tabindex="0" onclick="toggleFlip('art4_ffc')" onkeypress="if(event.key==='Enter' || event.key===' ') toggleFlip('art4_ffc')">
+              <div class="badge">IV</div>
+              <div class="section">
+                <p>Although this notes that States were required to recognize and honor other state’s laws, without a national court system, there was no neutral arbiter to settle disputes when states interpreted laws differently or ignored the "full faith and credit" clause. Each state functioned as its own ultimate legal authority.</p>
+              </div>
+              <div class="card-actions">
+                <button class="secondary" onclick="toggleFlip('art4_ffc');event.stopPropagation();">Flip back</button>
+              </div>
+            </div>
+          </div>
+        </article>
+        <article class="card" id="art4_extradition" aria-labelledby="art4_extradition-title">
+          <div class="card-inner" aria-expanded="false">
+            <div class="face front" tabindex="0" onclick="toggleFlip('art4_extradition')" onkeypress="if(event.key==='Enter' || event.key===' ') toggleFlip('art4_extradition')">
+              <div class="badge">IV</div>
+              <h3 id="art4_extradition-title" class="title"></h3>
+              <p class="excerpt">If any Person guilty of, or charged with, treason, felony, or other high misdemeanor in any state, shall flee from Justice, and be found in any of the united states, he shall upon demand of the Governor or executive power of the state from which he fled, be delivered up, and removed to the state having jurisdiction of his offence.</p>
+              <div class="card-actions">
+                <button class="secondary" onclick="toggleFlip('art4_extradition');event.stopPropagation();">Flip</button>
+              </div>
+            </div>
+            <div class="face back" tabindex="0" onclick="toggleFlip('art4_extradition')" onkeypress="if(event.key==='Enter' || event.key===' ') toggleFlip('art4_extradition')">
+              <div class="badge">IV</div>
+              <div class="section">
+                <p>This states that if someone is accused of a serious crime and escaped to another state, they would be returned when requested by the Governor. However, because there was no executive branch at the national level, these requirements between states could not be enforced. If a state chose not to extradite an individual, there was no central power to make them comply.</p>
+              </div>
+              <div class="card-actions">
+                <button class="secondary" onclick="toggleFlip('art4_extradition');event.stopPropagation();">Flip back</button>
+              </div>
+            </div>
+          </div>
+        </article>
+        <article class="card" id="art6" aria-labelledby="art6-title">
+          <div class="card-inner" aria-expanded="false">
+            <div class="face front" tabindex="0" onclick="toggleFlip('art6')" onkeypress="if(event.key==='Enter' || event.key===' ') toggleFlip('art6')">
+              <div class="badge">VI</div>
+              <h3 id="art6-title" class="title"></h3>
+              <p class="excerpt">No state without the Consent of the united states in congress assembled, shall send any embassy to, or receive any embassy from, or enter into any conference, agreement, alliance or treaty with any King, prince or state;… No two or more states shall enter into any treaty, confederation or alliance whatever between them, without the consent of the united states in congress assembled … No state shall lay any imposts of duties … No vessels of war shall be kept up in time of peace by any state, except such number only, as shall be deemed necessary by the united states in congress assembled … No state shall engage in any war without the consent of the united states in congress assembled</p>
+              <div class="card-actions">
+                <button class="secondary" onclick="toggleFlip('art6');event.stopPropagation();">Flip</button>
+              </div>
+            </div>
+            <div class="face back" tabindex="0" onclick="toggleFlip('art6')" onkeypress="if(event.key==='Enter' || event.key===' ') toggleFlip('art6')">
+              <div class="badge">VI</div>
+              <div class="section">
+                <p>The selected passage does not cover all the powers but the major ones including: policies related to foreign affairs and defense.</p>
+              </div>
+              <div class="card-actions">
+                <button class="secondary" onclick="toggleFlip('art6');event.stopPropagation();">Flip back</button>
+              </div>
+            </div>
+          </div>
+        </article>
+        <article class="card" id="art4_trade" aria-labelledby="art4_trade-title">
+          <div class="card-inner" aria-expanded="false">
+            <div class="face front" tabindex="0" onclick="toggleFlip('art4_trade')" onkeypress="if(event.key==='Enter' || event.key===' ') toggleFlip('art4_trade')">
+              <div class="badge">IV</div>
+              <h3 id="art4_trade-title" class="title"></h3>
+              <p class="excerpt">…shall enjoy therein all the privileges of trade and commerce, subject to the same duties, impositions and restrictions as the inhabitants thereof respectively, provided that such restrictions shall not extend so far as to prevent the removal of property imported into any state, to any other State of which the Owner is an inhabitant; provided also that no imposition, duties or restriction shall be laid by any state, on the property of the united states, or either of them.</p>
+              <div class="card-actions">
+                <button class="secondary" onclick="toggleFlip('art4_trade');event.stopPropagation();">Flip</button>
+              </div>
+            </div>
+            <div class="face back" tabindex="0" onclick="toggleFlip('art4_trade')" onkeypress="if(event.key==='Enter' || event.key===' ') toggleFlip('art4_trade')">
+              <div class="badge">IV</div>
+              <div class="section">
+                <p>Although this article promised "privileges of trade," states often ignored this by imposing their own tariffs, duties, and restrictions on out-of-state goods, which the central government lacked the power to regulate.</p>
+              </div>
+              <div class="card-actions">
+                <button class="secondary" onclick="toggleFlip('art4_trade');event.stopPropagation();">Flip back</button>
+              </div>
+            </div>
+          </div>
+        </article>
+        <article class="card" id="art5_structure" aria-labelledby="art5_structure-title">
+          <div class="card-inner" aria-expanded="false">
+            <div class="face front" tabindex="0" onclick="toggleFlip('art5_structure')" onkeypress="if(event.key==='Enter' || event.key===' ') toggleFlip('art5_structure')">
+              <div class="badge">V</div>
+              <h3 id="art5_structure-title" class="title"></h3>
+              <p class="excerpt">No state shall be represented in Congress by less than two, nor by more than seven Members; and no person shall be capable of being a delegate for more than three years in any term of six years; … In determining questions in the united states, in Congress assembled, each state shall have one vote.</p>
+              <div class="card-actions">
+                <button class="secondary" onclick="toggleFlip('art5_structure');event.stopPropagation();">Flip</button>
+              </div>
+            </div>
+            <div class="face back" tabindex="0" onclick="toggleFlip('art5_structure')" onkeypress="if(event.key==='Enter' || event.key===' ') toggleFlip('art5_structure')">
+              <div class="badge">V</div>
+              <div class="section">
+                <p>The structure of government defined by the Articles of Confederation includes only a legislative branch. The judiciary was handled with state courts. Congress would elect a member to preside over meetings, but there was no presidency or executive branch.</p>
+              </div>
+              <div class="card-actions">
+                <button class="secondary" onclick="toggleFlip('art5_structure');event.stopPropagation();">Flip back</button>
+              </div>
+            </div>
+          </div>
+        </article>
+        <article class="card" id="art9" aria-labelledby="art9-title">
+          <div class="card-inner" aria-expanded="false">
+            <div class="face front" tabindex="0" onclick="toggleFlip('art9')" onkeypress="if(event.key==='Enter' || event.key===' ') toggleFlip('art9')">
+              <div class="badge">IX</div>
+              <h3 id="art9-title" class="title"></h3>
+              <p class="excerpt">The united states in congress assembled, shall have the sole and exclusive right and power of determining on peace and war … The united states in congress assembled shall also have the sole and exclusive right and power of regulating the alloy and value of coin struck by their own authority.</p>
+              <div class="card-actions">
+                <button class="secondary" onclick="toggleFlip('art9');event.stopPropagation();">Flip</button>
+              </div>
+            </div>
+            <div class="face back" tabindex="0" onclick="toggleFlip('art9')" onkeypress="if(event.key==='Enter' || event.key===' ') toggleFlip('art9')">
+              <div class="badge">IX</div>
+              <div class="section">
+                <p>Even though Congress could coin money, it could not raise revenue through taxation. Only the states could levy and collect taxes. Congress did issue money (the Continental Currency), but many of the states issued their own currency as well. This lack of consistency in currency made trade between states and internationally confusing and led to economic difficulties for all.</p>
+              </div>
+              <div class="card-actions">
+                <button class="secondary" onclick="toggleFlip('art9');event.stopPropagation();">Flip back</button>
+              </div>
+            </div>
+          </div>
+        </article>
+        <article class="card" id="art12" aria-labelledby="art12-title">
+          <div class="card-inner" aria-expanded="false">
+            <div class="face front" tabindex="0" onclick="toggleFlip('art12')" onkeypress="if(event.key==='Enter' || event.key===' ') toggleFlip('art12')">
+              <div class="badge">XII</div>
+              <h3 id="art12-title" class="title"></h3>
+              <p class="excerpt">All bills of credit emitted, monies borrowed and debts contracted by, or under the authority of congress, before the assembling of the united states, in pursuance of the present confederation, shall be deemed and considered as a charge against the united states, for payment and satisfaction whereof the said united states, and the public faith are hereby solemnly pledged.</p>
+              <div class="card-actions">
+                <button class="secondary" onclick="toggleFlip('art12');event.stopPropagation();">Flip</button>
+              </div>
+            </div>
+            <div class="face back" tabindex="0" onclick="toggleFlip('art12')" onkeypress="if(event.key==='Enter' || event.key===' ') toggleFlip('art12')">
+              <div class="badge">XII</div>
+              <div class="section">
+                <p>The article highlighted that the new government expected to keep its financial promises. It was, however, essentially bankrupt because the central government did not have the power to tax individuals or control commerce, making it unable to uphold its commitment in this article.</p>
+              </div>
+              <div class="card-actions">
+                <button class="secondary" onclick="toggleFlip('art12');event.stopPropagation();">Flip back</button>
+              </div>
+            </div>
+          </div>
+        </article>
+        <article class="card" id="art13" aria-labelledby="art13-title">
+          <div class="card-inner" aria-expanded="false">
+            <div class="face front" tabindex="0" onclick="toggleFlip('art13')" onkeypress="if(event.key==='Enter' || event.key===' ') toggleFlip('art13')">
+              <div class="badge">XIII</div>
+              <h3 id="art13-title" class="title"></h3>
+              <p class="excerpt">And the Articles of this confederation shall be inviolably observed by every state, and the union shall be perpetual; nor shall any alteration at any time hereafter be made in any of them; unless such alteration be agreed to in a congress of the united states, and be afterward confirmed by the legislatures of every state.</p>
+              <div class="card-actions">
+                <button class="secondary" onclick="toggleFlip('art13');event.stopPropagation();">Flip</button>
+              </div>
+            </div>
+            <div class="face back" tabindex="0" onclick="toggleFlip('art13')" onkeypress="if(event.key==='Enter' || event.key===' ') toggleFlip('art13')">
+              <div class="badge">XIII</div>
+              <div class="section">
+                <p>The document required unanimous consent from all states in order to make any alteration to the document. This makes it extremely difficult to get the document changed so that it worked more effectively. Requiring all thirteen states to agree to changes made it nearly impossible to fix problems or adapt the system.</p>
+              </div>
+              <div class="card-actions">
+                <button class="secondary" onclick="toggleFlip('art13');event.stopPropagation();">Flip back</button>
+              </div>
+            </div>
+          </div>
+        </article>
+        <article class="card" id="art5_onevote" aria-labelledby="art5_onevote-title">
+          <div class="card-inner" aria-expanded="false">
+            <div class="face front" tabindex="0" onclick="toggleFlip('art5_onevote')" onkeypress="if(event.key==='Enter' || event.key===' ') toggleFlip('art5_onevote')">
+              <div class="badge">V</div>
+              <h3 id="art5_onevote-title" class="title"></h3>
+              <p class="excerpt">In determining questions in the united states, in Congress assembled, each state shall have one vote.</p>
+              <div class="card-actions">
+                <button class="secondary" onclick="toggleFlip('art5_onevote');event.stopPropagation();">Flip</button>
+              </div>
+            </div>
+            <div class="face back" tabindex="0" onclick="toggleFlip('art5_onevote')" onkeypress="if(event.key==='Enter' || event.key===' ') toggleFlip('art5_onevote')">
+              <div class="badge">V</div>
+              <div class="section">
+                <p>Giving each state one vote, regardless of population, created an unequal power distribution. Larger states like Virginia and Pennsylvania saw it as unfair that smaller states had equal voting power, which often resulted in legislative deadlocks and hindered progress on national issues.</p>
+              </div>
+              <div class="card-actions">
+                <button class="secondary" onclick="toggleFlip('art5_onevote');event.stopPropagation();">Flip back</button>
+              </div>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="exitbar">
+      <div class="row">
+        <label for="returnUrl">Saved return link</label>
+        <input id="returnUrl" type="url" placeholder="Paste the site to return to" />
+        <button id="saveUrl" class="ghost">Save return link</button>
+        <button id="goBack" class="secondary">Return to saved site</button>
+      </div>
+      <div class="row">
+        <label for="part3Url">Part III link</label>
+        <input id="part3Url" type="url" placeholder="Paste Part III URL (Themes)" />
+        <button id="savePart3" class="ghost">Save Part III</button>
+        <button id="toPart3" class="secondary">Proceed to Part III</button>
+      </div>
+    </div>
+    <p class="help">Tip: Use the saved links above to navigate. If a tab cannot be closed by script, use the browser’s close button (Ctrl/⌘+W).</p>
+    <p class="fulltext">If you would like to read the Articles of Confederation in full text, visit the <a href="https://www.archives.gov/milestone-documents/articles-of-confederation" target="_blank" rel="noopener">National Archives</a>.</p>
+  </footer>
+
+  <script>
+    function toggleFlip(id){
+      const inner = document.querySelector('#'+id+' .card-inner');
+      inner.classList.toggle('is-flipped');
+      inner.setAttribute('aria-expanded', inner.classList.contains('is-flipped'));
+    }
+
+    // Navigation logic
+    const DEFAULT_URL = 'https://tinyurl.com/alienarchivistpassagesdone';
+    const urlInput    = document.getElementById('returnUrl');
+    const saveBtn     = document.getElementById('saveUrl');
+    const goBackBtn   = document.getElementById('goBack');
+
+    const part3Input  = document.getElementById('part3Url');
+    const savePart3   = document.getElementById('savePart3');
+    const toPart3Btn  = document.getElementById('toPart3');
+
+    // Initialize fields from storage
+    const savedReturn = localStorage.getItem('phase2:returnUrl');
+    const initialUrl = savedReturn || DEFAULT_URL;
+    urlInput.value = initialUrl;
+    localStorage.setItem('phase2:returnUrl', initialUrl);
+
+    const savedPart3 = localStorage.getItem('phase3:url');
+    if (savedPart3) { part3Input.value = savedPart3; }
+
+    // Save handlers
+    saveBtn.addEventListener('click', () => {
+      const u = urlInput.value.trim();
+      if (!u) { alert('Paste a valid URL to save.'); return; }
+      try { new URL(u); } catch(e) { alert('That does not look like a valid URL. Include https://'); return; }
+      localStorage.setItem('phase2:returnUrl', u);
+      alert('Return link saved.');
+    });
+
+    savePart3.addEventListener('click', () => {
+      const u = part3Input.value.trim();
+      if (!u) { alert('Paste the Part III URL to save.'); return; }
+      try { new URL(u); } catch(e) { alert('That does not look like a valid URL. Include https://'); return; }
+      localStorage.setItem('phase3:url', u);
+      alert('Part III link saved.');
+    });
+
+    // Navigation buttons
+    goBackBtn.addEventListener('click', () => {
+      const u = localStorage.getItem('phase2:returnUrl');
+      if (u) { window.location.href = u; }
+      else { alert('No saved site yet. Paste and save a URL first.'); }
+    });
+
+    toPart3Btn.addEventListener('click', () => {
+      const dest = localStorage.getItem('phase3:url');
+      if (dest) { window.location.href = dest; }
+      else { alert('No Part III link saved yet. Paste and save a URL first.'); }
+    });
+  </script>
+</body>
+</html>

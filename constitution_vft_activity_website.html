@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Constitution · Activities A–C (All-in-one)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root { --bg:#0b132b; --panel:#0d1b2a; --ink:#1b1b1b; --accent:#5bc0be; --accent2:#2a9d8f; --accent3:#ffd166; --danger:#e76f51; --ok:#2a9d8f; --muted:#a8c0d8; }
+    html { scroll-behavior: smooth; }
+    body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, sans-serif; background: var(--bg); color:#e8eef7; }
+
+    /* Sticky nav */
+    .sticky { position: sticky; top:0; z-index:1000; background:#0d1b2a; border-bottom:2px solid var(--accent); }
+    .nav { display:flex; flex-wrap:wrap; gap:.6rem; align-items:center; padding:.6rem 1rem; }
+    .nav a { background:#14243f; color:#e8eef7; border:1px solid #2a3a5f; border-radius:8px; padding:.4rem .7rem; font-weight:700; text-decoration:none; }
+    .nav a.primary { background: var(--accent); color:#0b132b; border-color:var(--accent); }
+
+    header { padding:1rem 1.5rem; background:#0d1b2a; border-bottom:2px solid #2a3a5f; }
+    header h1 { margin:0 0 .2rem; }
+    header p { margin:.2rem 0; max-width:95ch; }
+    .kbd { display:inline-block; padding:.1rem .35rem; border-radius:6px; background:#14243f; border:1px solid #2a3a5f; font-weight:800; }
+
+    main { display:grid; gap:1rem; padding:1rem; }
+
+    /* Panels */
+    .panel { background:#0d1b2a; border:1px solid #2a3a5f; border-radius:12px; padding:1rem; }
+    .card { background: url(data:image/jpeg;base64,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); background-repeat:repeat-x; background-size:auto 100%; background-position:center; color:var(--ink); border-radius:10px; box-shadow:0 10px 20px rgba(0,0,0,0.25); padding:1rem; }
+    .card h3 { margin:.2rem 0; color:#0b132b; }
+    .card ul { margin:.4rem 0 0; padding-left:1.2rem; }
+
+    /* Preamble (Part A) */
+    .preamble { background: url(data:image/jpeg;base64,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); background-repeat:repeat-x; background-size:auto 100%; background-position:center; color:var(--ink); border-radius:10px; box-shadow:0 10px 20px rgba(0,0,0,0.25); padding:1rem; }
+    .preamble .line { font-size:1.1rem; line-height:1.8; }
+    select { background:#10203a; color:#e8eef7; border:1px solid #2a3a5f; border-radius:8px; padding:.25rem .4rem; }
+    select.correct { outline:3px solid var(--ok); }
+    select.incorrect { outline:3px solid var(--danger); }
+
+    .controls { display:flex; gap:.6rem; align-items:center; flex-wrap:wrap; margin-top:.8rem; }
+    button { background: var(--accent); border:none; color:#0b132b; padding:.5rem .8rem; border-radius:8px; font-weight:700; cursor:pointer; }
+    button.secondary { background: var(--accent2); }
+    button.danger { background: var(--danger); color:#fff; }
+    .score { margin-left:auto; font-weight:800; }
+
+    /* Core principles + articles context (Part B) */
+    .grid2 { display:grid; gap:1rem; grid-template-columns: 1fr 1fr; }
+    .hint { font-size:0.95rem; color:var(--muted); margin:.3rem 0 0; display:none; }
+    .hint.show { display:block; }
+    .hint-toggle { background:#14243f; color:#e8eef7; border:1px solid #2a3a5f; border-radius:6px; padding:.15rem .45rem; font-size:.85rem; cursor:pointer; }
+    .article-link { display:inline-block; margin-top:.3rem; background: var(--accent3); color:#0b132b; border:1px solid #e5c55c; border-radius:8px; padding:.25rem .55rem; font-weight:800; text-decoration:none; }
+
+    /* Matching board (Part B) */
+    .board { display:grid; grid-template-columns: 1fr 1fr; gap:1rem; margin-top:1rem; }
+    .source, .bins { background:#0d1b2a; border:1px solid #2a3a5f; border-radius:12px; padding:1rem; }
+    .chips { display:grid; gap:.5rem; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+    .chip { background:#10203a; color:#e8eef7; border:1px solid #2a3a5f; border-radius:10px; padding:.5rem .6rem; cursor:grab; outline:none; }
+    .chip:active { cursor:grabbing; }
+    .chip:focus { outline:3px solid var(--accent3); }
+    .bin-grid { display:grid; gap:1rem; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+    .bin { background:#0e223f; border:1px dashed #2a3a5f; border-radius:12px; padding:.75rem; min-height:140px; }
+    .bin h4 { margin:0 0 .4rem; font-weight:800; }
+    .dropzone { display:flex; flex-direction:column; gap:.4rem; min-height:70px; }
+    .chip .mark { margin-left:auto; font-weight:900; padding:0 .3rem; border-radius:6px; }
+    .correct .mark { color:#0b132b; background:var(--ok); }
+    .incorrect .mark { color:#fff; background:var(--danger); }
+
+    /* Part C – Branch powers */
+    .chips.narrow { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+
+    footer { margin: 0 1rem 1rem; background:#0d1b2a; border:1px solid #2a3a5f; border-radius:12px; padding:0.8rem; }
+    .exitbar { display:flex; flex-wrap:wrap; gap:.6rem; align-items:center; }
+    .exitbar input[type="url"] { flex: 1 1 280px; background:#0e1a31; color:#e8eef7; border:1px solid #2a3a5f; border-radius:8px; padding:0.5rem; }
+    .help { font-size:0.9rem; color:#a8c0d8; }
+    .ext { color:#ffd166; text-decoration:underline; }
+  </style>
+</head>
+<body>
+  <div class="sticky">
+    <nav class="nav">
+      <a href="#partA" class="primary">Part A: Preamble</a>
+      <a href="#partB">Part B: Principles & Articles</a>
+      <a href="#partC">Part C: Branch Powers</a>
+      <a href="#top">Back to Top</a>
+    </nav>
+  </div>
+
+  <header id="top">
+    <h1>Constitution Activities · All-in-one</h1>
+    <p>Use the sticky nav to jump between parts. Keyboard for Part B: <span class="kbd">1</span> Popular Sovereignty · <span class="kbd">2</span> Limited Government · <span class="kbd">3</span> Separation of Powers · <span class="kbd">4</span> Checks & Balances · <span class="kbd">5</span> Federalism · <span class="kbd">6</span> Republicanism · <span class="kbd">7</span> Individual Rights. Keyboard for Part C: <span class="kbd">1</span> Legislative · <span class="kbd">2</span> Executive · <span class="kbd">3</span> Judicial.</p>
+  </header>
+
+  <main>
+    <!-- Part A: Preamble -->
+    <section id="partA" class="panel" aria-label="Part A — Preamble">
+      <h2>Part A · Preamble (Fill the Blanks)</h2>
+      <div class="preamble">
+        <div class="line">
+          We the 
+          <select id="s1"><option value="">—</option><option>People</option><option>States</option><option>Congress</option></select>,
+          in order to form a more perfect 
+          <select id="s2"><option value="">—</option><option>Union</option><option>Country</option><option>Government</option></select>,
+          establish 
+          <select id="s3"><option value="">—</option><option>Justice</option><option>Law</option><option>Order</option></select>,
+          insure domestic 
+          <select id="s4"><option value="">—</option><option>Tranquility</option><option>Peace</option><option>Safety</option></select>,
+          provide for the common 
+          <select id="s5"><option value="">—</option><option>Defense</option><option>Good</option><option>Security</option></select>,
+          promote the general 
+          <select id="s6"><option value="">—</option><option>Welfare</option><option>Benefit</option><option>Prosperity</option></select>,
+          and secure the blessings of 
+          <select id="s7"><option value="">—</option><option>Liberty</option><option>Freedom</option><option>Rights</option></select>
+          to ourselves and our 
+          <select id="s8"><option value="">—</option><option>Posterity</option><option>Children</option><option>Future</option></select>.
+        </div>
+      </div>
+      <div class="controls">
+        <button class="secondary" onclick="checkPreamble()">Check answers</button>
+        <button onclick="resetPreambleFeedback()">Reset</button>
+        <button class="danger" onclick="clearPreamble()">Clear all</button>
+        <span id="scorePreamble" class="score">Score: –</span>
+      </div>
+      <div class="reference" style="margin-top:.8rem;">
+        <p><a class="ext" href="https://www.loc.gov/item/mtjbib000156/" target="_blank" rel="noopener">Explore Jefferson’s draft of the Constitution (Library of Congress)</a>.</p>
+      </div>
+    </section>
+
+    <!-- Part B: Principles ↔ Articles -->
+    <section id="partB" class="panel" aria-label="Part B — Match Articles to Core Principles">
+      <h2>Part B · Core Principles Defined & Article Matching</h2>
+      <div class="grid2">
+        <div class="card">
+          <h3>Core Principles Defined</h3>
+          <ul>
+            <li><strong>Popular Sovereignty:</strong> Authority from consent of the governed. <button class="hint-toggle" onclick="toggleHint('hint-pop')">Show hint</button><div id="hint-pop" class="hint">Hint: Often linked to Articles V & VII.</div></li>
+            <li><strong>Limited Government:</strong> Power restricted by law and enumerated powers. <button class="hint-toggle" onclick="toggleHint('hint-limit')">Show hint</button><div id="hint-limit" class="hint">Hint: Often linked to Articles I & II.</div></li>
+            <li><strong>Separation of Powers:</strong> Legislative (makes), Executive (enforces), Judicial (interprets). <button class="hint-toggle" onclick="toggleHint('hint-sep')">Show hint</button><div id="hint-sep" class="hint">Hint: Often linked to Articles I, II & III.</div></li>
+            <li><strong>Checks & Balances:</strong> Branches limit one another. <button class="hint-toggle" onclick="toggleHint('hint-checks')">Show hint</button><div id="hint-checks" class="hint">Hint: Often linked to Articles I, II & III.</div></li>
+            <li><strong>Federalism:</strong> Power shared national/state; federal law supreme. <button class="hint-toggle" onclick="toggleHint('hint-fed')">Show hint</button><div id="hint-fed" class="hint">Hint: Often linked to Articles IV & VI.</div></li>
+            <li><strong>Republicanism:</strong> People elect representatives. <button class="hint-toggle" onclick="toggleHint('hint-rep')">Show hint</button><div id="hint-rep" class="hint">Hint: Often linked to Articles I & IV.</div></li>
+            <li><strong>Individual Rights:</strong> Fundamental freedoms protected. <button class="hint-toggle" onclick="toggleHint('hint-rights')">Show hint</button><div id="hint-rights" class="hint">Hint: Often linked to Article VI (no religious test).</div></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Articles I–VII (Quick Summary)</h3>
+          <ul>
+            <li><strong>Article I:</strong> Legislative branch; enumerated powers; limits on Congress. <a class="article-link" href="https://www.archives.gov/founding-docs/constitution-transcript" target="_blank" rel="noopener">View Article I</a></li>
+            <li><strong>Article II:</strong> Executive branch; presidential powers; advice & consent. <a class="article-link" href="https://www.archives.gov/founding-docs/constitution-transcript" target="_blank" rel="noopener">View Article II</a></li>
+            <li><strong>Article III:</strong> Judicial branch; courts and jurisdiction. <a class="article-link" href="https://www.archives.gov/founding-docs/constitution-transcript" target="_blank" rel="noopener">View Article III</a></li>
+            <li><strong>Article IV:</strong> State relations; Full Faith & Credit; Guarantee Clause. <a class="article-link" href="https://www.archives.gov/founding-docs/constitution-transcript" target="_blank" rel="noopener">View Article IV</a></li>
+            <li><strong>Article V:</strong> Amendment process. <a class="article-link" href="https://www.archives.gov/founding-docs/constitution-transcript" target="_blank" rel="noopener">View Article V</a></li>
+            <li><strong>Article VI:</strong> Supremacy Clause; oath; no religious test. <a class="article-link" href="https://www.archives.gov/founding-docs/constitution-transcript" target="_blank" rel="noopener">View Article VI</a></li>
+            <li><strong>Article VII:</strong> Ratification process. <a class="article-link" href="https://www.archives.gov/founding-docs/constitution-transcript" target="_blank" rel="noopener">View Article VII</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <section class="board">
+        <div class="source" aria-label="Articles">
+          <h3>Articles</h3>
+          <div class="chips" id="sourceChips">
+            <div class="chip" tabindex="0" role="button" draggable="true" data-id="a1" ondragstart="onDragStart(event)" onkeydown="onChipKeydown(event)">Article I — Legislative</div>
+            <div class="chip" tabindex="0" role="button" draggable="true" data-id="a2" ondragstart="onDragStart(event)" onkeydown="onChipKeydown(event)">Article II — Executive</div>
+            <div class="chip" tabindex="0" role="button" draggable="true" data-id="a3" ondragstart="onDragStart(event)" onkeydown="onChipKeydown(event)">Article III — Judicial</div>
+            <div class="chip" tabindex="0" role="button" draggable="true" data-id="a4" ondragstart="onDragStart(event)" onkeydown="onChipKeydown(event)">Article IV — States & Relations</div>
+            <div class="chip" tabindex="0" role="button" draggable="true" data-id="a5" ondragstart="onDragStart(event)" onkeydown="onChipKeydown(event)">Article V — Amendments</div>
+            <div class="chip" tabindex="0" role="button" draggable="true" data-id="a6" ondragstart="onDragStart(event)" onkeydown="onChipKeydown(event)">Article VI — Supremacy, Oaths</div>
+            <div class="chip" tabindex="0" role="button" draggable="true" data-id="a7" ondragstart="onDragStart(event)" onkeydown="onChipKeydown(event)">Article VII — Ratification</div>
+          </div>
+          <div class="controls">
+            <button class="secondary" onclick="checkPrinciples()">Check answers</button>
+            <button onclick="resetPrinciplesFeedback()">Reset</button>
+            <button class="danger" onclick="clearPrinciples()">Clear all</button>
+            <span id="scorePrinciples" class="score">Score: –</span>
+          </div>
+        </div>
+
+        <div class="bins" aria-label="Principles">
+          <h3>Core Principles (Match here)</h3>
+          <div class="bin-grid">
+            <article class="bin" id="p-pop" ondragover="onDragOver(event)" ondrop="onDrop(event, 'p-pop')"><h4>1 · Popular Sovereignty</h4><div class="dropzone"></div></article>
+            <article class="bin" id="p-limit" ondragover="onDragOver(event)" ondrop="onDrop(event, 'p-limit')"><h4>2 · Limited Government</h4><div class="dropzone"></div></article>
+            <article class="bin" id="p-sep" ondragover="onDragOver(event)" ondrop="onDrop(event, 'p-sep')"><h4>3 · Separation of Powers</h4><div class="dropzone"></div></article>
+            <article class="bin" id="p-checks" ondragover="onDragOver(event)" ondrop="onDrop(event, 'p-checks')"><h4>4 · Checks & Balances</h4><div class="dropzone"></div></article>
+            <article class="bin" id="p-fed" ondragover="onDragOver(event)" ondrop="onDrop(event, 'p-fed')"><h4>5 · Federalism</h4><div class="dropzone"></div></article>
+            <article class="bin" id="p-rep" ondragover="onDragOver(event)" ondrop="onDrop(event, 'p-rep')"><h4>6 · Republicanism</h4><div class="dropzone"></div></article>
+            <article class="bin" id="p-rights" ondragover="onDragOver(event)" ondrop="onDrop(event, 'p-rights')"><h4>7 · Individual Rights</h4><div class="dropzone"></div></article>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <!-- Part C: Branch powers (Expanded) -->
+    <section id="partC" class="panel" aria-label="Part C — Branch Powers">
+      <h2>Part C · Branch Powers (Expanded)</h2>
+      <section class="board">
+        <div class="source" aria-label="Powers">
+          <h3>Powers</h3>
+          <div class="chips narrow" id="sourceChipsC">
+            <!-- Legislative -->
+            <div class="chip" tabindex="0" role="button" draggable="true" data-id="b_leg_war" ondragstart="onDragStartC(event)" onkeydown="onChipKeydownC(event)">Declare war</div>
+            <div class="chip" tabindex="0" role="button" draggable="true" data-id="b_leg_tax" ondragstart="onDragStartC(event)" onkeydown="onChipKeydownC(event)">Raise revenue (tax)</div>
+            <div class="chip" tabindex="0" role="button" draggable="true" data-id="b_leg_impeach" ondragstart="onDragStartC(event)" onkeydown="onChipKeydownC(event)">Impeach officials</div>
+            <div class="chip" tabindex="0" role="button" draggable="true" data-id="b_leg_budget" ondragstart="onDragStartC(event)" onkeydown="onChipKeydownC(event)">Approve the federal budget</div>
+            <div class="chip" tabindex="0" role="button" draggable="true" data-id="b_leg_coin" ondragstart="onDragStartC(event)" onkeydown="onChipKeydownC(event)">Coin money</div>
+            <div class="chip" tabindex="0" role="button" draggable="true" data-id="b_leg_commerce" ondragstart="onDragStartC(event)" onkeydown="onChipKeydownC(event)">Regulate interstate commerce</div>
+            <div class="chip" tabindex="0" role="button" draggable="true" data-id="b_leg_confirm" ondragstart="onDragStartC(event)" onkeydown="onChipKeydownC(event)">Confirm presidential appointments</div>
+
+            <!-- Executive -->
+            <div class="chip" tabindex="0" role="button" draggable="true" data-id="b_exec_veto" ondragstart="onDragStartC(event)" onkeydown="onChipKeydownC(event)">Veto bills</div>
+            <div class="chip" tabindex="0" role="button" draggable="true" data-id="b_exec_nominate" ondragstart="onDragStartC(event)" onkeydown="onChipKeydownC(event)">Nominate judges</div>
+            <div class="chip" tabindex="0" role="button" draggable="true" data-id="b_exec_cinc" ondragstart="onDragStartC(event)" onkeydown="onChipKeydownC(event)">Commander-in-Chief of the armed forces</div>
+            <div class="chip" tabindex="0" role="button" draggable="true" data-id="b_exec_orders" ondragstart="onDragStartC(event)" onkeydown="onChipKeydownC(event)">Issue executive orders</div>
+            <div class="chip" tabindex="0" role="button" draggable="true" data-id="b_exec_treaties" ondragstart="onDragStartC(event)" onkeydown="onChipKeydownC(event)">Negotiate treaties</div>
+            <div class="chip" tabindex="0" role="button" draggable="true" data-id="b_exec_pardons" ondragstart="onDragStartC(event)" onkeydown="onChipKeydownC(event)">Grant pardons</div>
+
+            <!-- Judicial -->
+            <div class="chip" tabindex="0" role="button" draggable="true" data-id="b_jud_interpret" ondragstart="onDragStartC(event)" onkeydown="onChipKeydownC(event)">Interpret laws</div>
+            <div class="chip" tabindex="0" role="button" draggable="true" data-id="b_jud_review" ondragstart="onDragStartC(event)" onkeydown="onChipKeydownC(event)">Review constitutionality</div>
+            <div class="chip" tabindex="0" role="button" draggable="true" data-id="b_jud_disputes" ondragstart="onDragStartC(event)" onkeydown="onChipKeydownC(event)">Resolve disputes between states</div>
+            <div class="chip" tabindex="0" role="button" draggable="true" data-id="b_jud_fedcases" ondragstart="onDragStartC(event)" onkeydown="onChipKeydownC(event)">Hear cases involving federal law</div>
+            <div class="chip" tabindex="0" role="button" draggable="true" data-id="b_jud_strikedown" ondragstart="onDragStartC(event)" onkeydown="onChipKeydownC(event)">Strike down unconstitutional laws</div>
+          </div>
+          <div class="controls">
+            <button class="secondary" onclick="checkBranches()">Check answers</button>
+            <button onclick="resetBranchesFeedback()">Reset</button>
+            <button class="danger" onclick="clearBranches()">Clear all</button>
+            <span id="scoreBranches" class="score">Score: –</span>
+          </div>
+        </div>
+
+        <div class="bins" aria-label="Branches">
+          <h3>Branches of Government</h3>
+          <div class="bin-grid">
+            <article class="bin" id="leg" ondragover="onDragOverC(event)" ondrop="onDropC(event, 'leg')"><h4>1 · Legislative</h4><div class="dropzone"></div></article>
+            <article class="bin" id="exec" ondragover="onDragOverC(event)" ondrop="onDropC(event, 'exec')"><h4>2 · Executive</h4><div class="dropzone"></div></article>
+            <article class="bin" id="jud" ondragover="onDragOverC(event)" ondrop="onDropC(event, 'jud')"><h4>3 · Judicial</h4><div class="dropzone"></div></article>
+          </div>
+          <p class="help">Tip: Focus a power and press <span class="kbd">1–3</span> to send it to a branch. Press <span class="kbd">Delete</span> on a placed chip to remove.</p>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <footer>
+    <div class="exitbar">
+      <input id="returnUrl" type="url" placeholder="Paste the site to return to" />
+      <button id="saveUrl" class="ghost">Save return link</button>
+      <button id="goBack" class="secondary">Return to saved site</button>
+    </div>
+  </footer>
+
+  <script>
+    /* ===== Part A – Preamble ===== */
+    const PREAMBLE_KEY = { s1:'People', s2:'Union', s3:'Justice', s4:'Tranquility', s5:'Defense', s6:'Welfare', s7:'Liberty', s8:'Posterity'};
+    function checkPreamble(){ let correct=0, total=8; Object.keys(PREAMBLE_KEY).forEach(id=>{ const el=document.getElementById(id); el.classList.remove('correct','incorrect'); if(el.value===PREAMBLE_KEY[id]){ el.classList.add('correct'); correct++; } else { el.classList.add('incorrect'); } }); document.getElementById('scorePreamble').textContent='Score: '+correct+'/'+total; }
+    function resetPreambleFeedback(){ Object.keys(PREAMBLE_KEY).forEach(id=>{ const el=document.getElementById(id); el.classList.remove('correct','incorrect'); }); document.getElementById('scorePreamble').textContent='Score: –'; }
+    function clearPreamble(){ Object.keys(PREAMBLE_KEY).forEach(id=>{ const el=document.getElementById(id); el.value=''; el.classList.remove('correct','incorrect'); }); document.getElementById('scorePreamble').textContent='Score: –'; }
+
+    /* ===== Part B – Principles ↔ Articles ===== */
+    function toggleHint(id){ const el=document.getElementById(id); el.classList.toggle('show'); }
+    const KEY_B = { 'a1':'p-sep', 'a2':'p-sep', 'a3':'p-sep', 'a4':'p-fed', 'a5':'p-pop', 'a6':'p-fed', 'a7':'p-pop' };
+    const BIN_BY_NUMBER_B = { '1':'p-pop','2':'p-limit','3':'p-sep','4':'p-checks','5':'p-fed','6':'p-rep','7':'p-rights' };
+    function onChipKeydown(e){ const k=e.key; if(BIN_BY_NUMBER_B[k]){ e.preventDefault(); const id=e.currentTarget.getAttribute('data-id'); sendChipTo(BIN_BY_NUMBER_B[k], id, e.currentTarget); } }
+    function sendChipTo(binId, id, chipEl){ const zone=document.querySelector('#'+binId+' .dropzone'); const clone=chipEl.cloneNode(true); clone.removeAttribute('draggable'); clone.onkeydown=function(ev){ if(ev.key==='Delete' || ev.key==='Backspace'){ ev.preventDefault(); ev.currentTarget.remove(); } }; let mark=clone.querySelector('.mark'); if(!mark){ mark=document.createElement('span'); mark.className='mark'; clone.appendChild(mark); } zone.appendChild(clone); }
+    function onDragStart(e){ e.dataTransfer.setData('text/plain', e.target.getAttribute('data-id')); }
+    function onDragOver(e){ e.preventDefault(); }
+    function onDrop(e, bin){ e.preventDefault(); const id=e.dataTransfer.getData('text/plain'); if(!id) return; const chip=document.querySelector('.chip[data-id="'+id+'"]'); sendChipTo(bin, id, chip); }
+    function resetPrinciplesFeedback(){ document.querySelectorAll('#partB .chip').forEach(c=>{ c.classList.remove('correct','incorrect'); const m=c.querySelector('.mark'); if(m) m.textContent=''; }); document.querySelectorAll('#partB .bin').forEach(b=>{ b.style.outline='none'; }); document.getElementById('scorePrinciples').textContent='Score: –'; }
+    function clearPrinciples(){ document.querySelectorAll('#partB .dropzone').forEach(z=>z.innerHTML=''); resetPrinciplesFeedback(); }
+    function checkPrinciples(){ let correct=0, total=0; document.querySelectorAll('#partB .dropzone').forEach(z=>{ const bin=z.parentElement.id; z.querySelectorAll('.chip').forEach(ch=>{ total++; const id=ch.getAttribute('data-id'); const ok=KEY_B[id]===bin; ch.classList.remove('correct','incorrect'); ch.classList.add(ok? 'correct':'incorrect'); const mark=ch.querySelector('.mark')||document.createElement('span'); mark.className='mark'; mark.textContent= ok? '✓':'✗'; if(!ch.querySelector('.mark')) ch.appendChild(mark); if(ok) correct++; }); }); if(total===0){ total=Object.keys(KEY_B).length; } document.getElementById('scorePrinciples').textContent='Score: '+correct+'/'+total; document.querySelectorAll('#partB .bin').forEach(b=>{ const binId=b.id; const placed=b.querySelectorAll('.chip'); const allCorrect = Array.from(placed).length>0 && Array.from(placed).every(ch=>KEY_B[ch.getAttribute('data-id')]==binId); b.style.outline = allCorrect? '3px solid var(--ok)' : '3px solid var(--danger)'; }); }
+
+    /* ===== Part C – Branch powers ===== */
+    const KEY_C = { 'b_leg_war':'leg', 'b_leg_tax':'leg', 'b_leg_impeach':'leg', 'b_leg_budget':'leg', 'b_leg_coin':'leg', 'b_leg_commerce':'leg', 'b_leg_confirm':'leg',
+      'b_exec_veto':'exec', 'b_exec_nominate':'exec', 'b_exec_cinc':'exec', 'b_exec_orders':'exec', 'b_exec_treaties':'exec', 'b_exec_pardons':'exec',
+      'b_jud_interpret':'jud', 'b_jud_review':'jud', 'b_jud_disputes':'jud', 'b_jud_fedcases':'jud', 'b_jud_strikedown':'jud' };
+    const BIN_BY_NUMBER_C = { '1':'leg', '2':'exec', '3':'jud' };
+    function onChipKeydownC(e){ const k=e.key; if(BIN_BY_NUMBER_C[k]){ e.preventDefault(); const id=e.currentTarget.getAttribute('data-id'); sendChipToC(BIN_BY_NUMBER_C[k], id, e.currentTarget); } }
+    function sendChipToC(binId, id, chipEl){ const zone=document.querySelector('#'+binId+' .dropzone'); const clone=chipEl.cloneNode(true); clone.removeAttribute('draggable'); clone.onkeydown=function(ev){ if(ev.key==='Delete' || ev.key==='Backspace'){ ev.preventDefault(); ev.currentTarget.remove(); } }; let mark=clone.querySelector('.mark'); if(!mark){ mark=document.createElement('span'); mark.className='mark'; clone.appendChild(mark); } zone.appendChild(clone); }
+    function onDragStartC(e){ e.dataTransfer.setData('text/plain', e.target.getAttribute('data-id')); }
+    function onDragOverC(e){ e.preventDefault(); }
+    function onDropC(e, bin){ e.preventDefault(); const id=e.dataTransfer.getData('text/plain'); if(!id) return; const chip=document.querySelector('#partC .chip[data-id="'+id+'"]'); sendChipToC(bin, id, chip); }
+    function resetBranchesFeedback(){ document.querySelectorAll('#partC .chip').forEach(c=>{ c.classList.remove('correct','incorrect'); const m=c.querySelector('.mark'); if(m) m.textContent=''; }); document.querySelectorAll('#partC .bin').forEach(b=>{ b.style.outline='none'; }); document.getElementById('scoreBranches').textContent='Score: –'; }
+    function clearBranches(){ document.querySelectorAll('#partC .dropzone').forEach(z=>z.innerHTML=''); resetBranchesFeedback(); }
+    function checkBranches(){ let correct=0, total=0; document.querySelectorAll('#partC .dropzone').forEach(z=>{ const bin=z.parentElement.id; z.querySelectorAll('.chip').forEach(ch=>{ total++; const id=ch.getAttribute('data-id'); const ok=KEY_C[id]===bin; ch.classList.remove('correct','incorrect'); ch.classList.add(ok? 'correct':'incorrect'); const mark=ch.querySelector('.mark')||document.createElement('span'); mark.className='mark'; mark.textContent= ok? '✓':'✗'; if(!ch.querySelector('.mark')) ch.appendChild(mark); if(ok) correct++; }); }); if(total===0){ total=Object.keys(KEY_C).length; } document.getElementById('scoreBranches').textContent='Score: '+correct+'/'+total; document.querySelectorAll('#partC .bin').forEach(b=>{ const binId=b.id; const placed=b.querySelectorAll('.chip'); const allCorrect = Array.from(placed).length>0 && Array.from(placed).every(ch=>KEY_C[ch.getAttribute('data-id')]==binId); b.style.outline = allCorrect? '3px solid var(--ok)' : '3px solid var(--danger)'; }); }
+
+    /* Footer return link */
+    const urlInput=document.getElementById('returnUrl'); const saveBtn=document.getElementById('saveUrl'); const goBackBtn=document.getElementById('goBack'); const saved=localStorage.getItem('constitution:returnUrl'); if(saved) urlInput.value=saved; saveBtn.addEventListener('click', ()=>{ const u=urlInput.value.trim(); if(!u){ alert('Paste a valid URL'); return;} try{ new URL(u);}catch(e){ alert('Include https://'); return;} localStorage.setItem('constitution:returnUrl', u); alert('Return link saved.'); }); goBackBtn.addEventListener('click', ()=>{ const u=localStorage.getItem('constitution:returnUrl'); if(u) window.location.href=u; else alert('No saved site yet'); });
+  </script>
+</body>
+</html>
