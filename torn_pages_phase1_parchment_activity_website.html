@@ -1,225 +1,614 @@
-  1  <!DOCTYPE html>
-  2  <html lang="en">
-  3  <head>
-  4    <meta charset="UTF-8" />
-  5    <title>Alien Archivists – Phase I (Parchment Scroll)</title>
-  6    <meta name="viewport" content="width=device-width, initial-scale=1" />
-  7    <style>
-  8      :root { --bg:#0b132b; --panel:#1c2541; --ink:#1b1b1b; --accent:#5bc0be; --accent2:#2a9d8f; --warn:#f4a261; }
-  9      body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, sans-serif; background: var(--bg); color:#e8eef7; }
- 10      header { padding:1rem 1.5rem; background:#0d1b2a; border-bottom:2px solid var(--accent); }
- 11      header h1 { margin:0; }
- 12
- 13      main { display:grid; grid-template-columns: 1fr; gap:1rem; padding:1rem; }
- 14      .papers { display:flex; flex-direction: column; gap:1rem; }
- 15      /* FORCE A NARROW READING WIDTH */
- 16      * { box-sizing: border-box; }
- 17
- 18      html, body {
- 19        width: 100%;
- 20        max-width: 100%;
- 21        overflow-x: hidden;
- 22      }
- 23
- 24      /* Make the page feel like a book/tablet */
- 25      main {
- 26        max-width: 900px;   /* adjust: 800–1000px if needed */
- 27        margin: 0 auto;
- 28      }
- 29
- 30      /* Prevent parchment overflow */
- 31      .papers { width: 100%; }
- 32      .paper  { width: 100%; max-width: 100%; }
- 33
- 34      .paper p {
- 35        max-width: 65ch;
- 36        overflow-wrap: break-word;
- 37        word-wrap: break-word;
- 38      }
- 39
- 40      .paper {
- 41        position:relative; padding:1.2rem 1.4rem; color:var(--ink); border-radius:8px;
- 42        box-shadow:0 10px 20px rgba(0,0,0,0.25);
- 43        background: url(data:image/jpeg;base64,[[BASE64…TRUNCATED]]);
- 44        background-repeat: no-repeat; background-size: cover; background-position: center; width:100%; min-height: 140px;
- 45      }
- 46      .paper::before, .paper::after { content:''; position:absolute; left:0; right:0; height:16px; }
- 47      .paper::before { top:0; background: linear-gradient(to bottom, rgba(0,0,0,0.25), rgba(0,0,0,0)); border-top-left-radius:8px; border-top-right-radius:8px; }
- 48      .paper::after  { bottom:0; background: linear-gradient(to top, rgba(0,0,0,0.25), rgba(0,0,0,0)); border-bottom-left-radius:8px; border-bottom-right-radius:8px; }
- 49
- 50      .paper h3 { margin:0 0 0.6rem; color:#3a3a3a; font-weight:800; letter-spacing:0.02em; padding-left:56px; }
- 51      .badge { position:absolute; left:12px; top:12px; width:36px; height:36px; border-radius:50%; display:grid; place-items:center; font-weight:900; color:#0b132b; background: var(--accent); box-shadow: 0 2px 8px rgba(0,0,0,0.25); }
- 52      .stamp { position:absolute; right:8px; top:8px; background: rgba(91,192,190,0.12); color:#236d6b; border:2px dashed #5bc0be; border-radius:6px; font-weight:800; padding:0.2rem 0.5rem; transform: rotate(-6deg); }
- 53
- 54      .paper p { line-height:1.6; font-size:1.05rem; }
- 55      .missing { background: repeating-linear-gradient(45deg,#eee 0,#eee 6px,#ddd 6px,#ddd 12px); color:#7a7a7a; padding:0 6px; border-radius:4px; border:1px dashed #999; }
- 56      .hint { font-weight: inherit; background: transparent; border-radius:4px; padding:0 2px; transition: box-shadow .2s ease, background .2s ease, font-weight .2s ease; }
- 57      .hint.active { font-weight:800; background: rgba(243,209,0,0.25); box-shadow: 0 0 0 3px rgba(243,209,0,0.35); }
- 58
- 59      .sidebar { background: var(--panel); border:1px solid #2a3a5f; border-radius:10px; padding:1rem; }
- 60      .sidebar h2 { margin-top:0; }
- 61      .q { margin-bottom:1rem; }
- 62      .q label { display:block; margin:0.5rem 0; font-weight:700; }
- 63      .options { display:grid; gap:0.3rem; }
- 64      .btnbar { display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center; margin-top:0.6rem; }
- 65      button { background: var(--accent); border:none; color:#0b132b; padding:0.6rem 0.9rem; border-radius:8px; font-weight:700; cursor:pointer; }
- 66      button.secondary { background: var(--accent2); color:#0b132b; }
- 67      button.ghost { background: transparent; border:1px solid var(--accent); color:#e8eef7; }
- 68      .link { color:#5bc0be; cursor:pointer; text-decoration: underline; font-weight:700; }
- 69      .msg { font-size:0.95rem; margin-top:0.6rem; }
- 70      .ok { color:#2a9d8f; font-weight:800; }
- 71      .err { color:#f4a261; font-weight:700; }
- 72
- 73      /* Exit footer */
- 74      footer { margin: 0 1rem 1rem; background:#0d1b2a; border:1px solid #2a3a5f; border-radius:12px; padding:0.8rem; }
- 75      .exitbar { display:flex; flex-wrap:wrap; gap:0.6rem; align-items:center; }
- 76      .exitbar input[type="url"] { flex: 1 1 280px; background:#0e1a31; color:#e8eef7; border:1px solid #2a3a5f; border-radius:8px; padding:0.5rem; }
- 77      .help { font-size:0.9rem; color:#a8c0d8; }
- 78    </style>
- 79  </head>
- 80  <body>
- 81    <header>
- 82      <h1>Alien Archivists · Phase I: Parchment Scroll</h1>
- 83    </header>
- 84
- 85    <main>
- 86      <section>
- 87        <div class="papers" aria-label="Parchment fragments">
- 88
- 89          <figure id="fragA" class="paper" aria-labelledby="fragA-title">
- 90            <div class="badge" aria-hidden="true" data-frag="A">A</div>
- 91            <div class="stamp" aria-hidden="true">Fragment A</div>
- 92            <h3 id="fragA-title">Privileges & Immunities</h3>
- 93            <p>… better to secure and perpetuate <span class="hint">mutual friendship</span> ... <span class="hint">privileges and immunities</span> ...</p>
- 94          </figure>
- 95
- 96          <figure id="fragB" class="paper" aria-labelledby="fragB-title">
- 97            <div class="badge" aria-hidden="true" data-frag="B">B</div>
- 98            <div class="stamp" aria-hidden="true">Fragment B</div>
- 99            <h3 id="fragB-title">Trade & Property</h3>
-100            <p>… <span class="hint">no imposition, duties or restriction</span> ...</p>
-101          </figure>
-102
-103          <figure id="fragC" class="paper" aria-labelledby="fragC-title">
-104            <div class="badge" aria-hidden="true" data-frag="C">C</div>
-105            <div class="stamp" aria-hidden="true">Fragment C</div>
-106            <h3 id="fragC-title">Foreign Embassies & Titles</h3>
-107            <p>No <span class="missing">[paper torn]</span>, shall <span class="hint">send any embassy</span> ... <span class="hint">treaty</span> ... <span class="hint">title of nobility</span> …</p>
-108          </figure>
-109
-110          <figure id="fragD" class="paper" aria-labelledby="fragD-title">
-111            <div class="badge" aria-hidden="true" data-frag="D">D</div>
-112            <div class="stamp" aria-hidden="true">Fragment D</div>
-113            <h3 id="fragD-title">Standing Forces & Militia</h3>
-114            <p>No <span class="hint">vessels of war</span> ... <span class="hint">well regulated and disciplined militia</span> ... <span class="hint">arms, ammunition</span> ...</p>
-115          </figure>
-116
-117          <figure id="fragE" class="paper" aria-labelledby="fragE-title">
-118            <div class="badge" aria-hidden="true" data-frag="E">E</div>
-119            <div class="stamp" aria-hidden="true">Fragment E</div>
-120            <h3 id="fragE-title">Ratification</h3>
-121            <p>... we, the <span class="hint">undersigned delegates</span> ... <span class="hint">ratify and confirm</span> …</p>
-122          </figure>
-123
-124          <figure id="fragF" class="paper" aria-labelledby="fragF-title">
-125            <div class="badge" aria-hidden="true" data-frag="F">F</div>
-126            <div class="stamp" aria-hidden="true">Fragment F</div>
-127            <h3 id="fragF-title">Supermajority Rule</h3>
-128            <p>... unless <span class="hint">nine states assent</span> ... <span class="hint">majority</span> ... <span class="missing">[paper torn]</span> assembled.</p>
-129          </figure>
-130
-131        </div>
-132      </section>
-133
-134      <section class="sidebar" aria-label="Phase I Questions">
-135        <h2>Phase I · Identify & Interpret (Submit each separately)</h2>
-136
-137        <div class="q" id="q1">
-138          <label>Who wrote this document? <em>(Click all that apply)</em></label>
-139          <div class="options">
-140            <label><input type="radio" name="author" value="monarch"> A single monarch</label>
-141            <label><input type="radio" name="author" value="congress"> Delegates of the states in Congress assembled</label>
-142            <label><input type="radio" name="author" value="ambassador"> A foreign ambassador</label>
-143            <label><input type="radio" name="author" value="general"> A military general</label>
-144          </div>
-145          <div class="btnbar">
-146            <button class="ghost" onclick="persistHints('#fragE .hint')">Need a clue?</button>
-147            <span class="link" onclick="clearHints('#fragE .hint')">Clear clues</span>
-148            <button class="secondary" onclick="submitQ1()">Submit Q1</button>
-149            <span id="msg1" class="msg"></span>
-150          </div>
-151        </div>
-152
-153        <div class="q" id="q2">
-154          <label>Who was the intended audience?</label>
-155          <div class="options">
-156            <label><input type="radio" name="audience" value="state_leaders"> Leaders of the states</label>
-157            <label><input type="radio" name="audience" value="general_public"> The general public</label>
-158            <label><input type="radio" name="audience" value="foreign_powers"> Foreign governments</label>
-159          </div>
-160          <div class="btnbar">
-161            <button class="ghost" onclick="persistHints('#fragA .hint, #fragB .hint')">Need a clue?</button>
-162            <span class="link" onclick="clearHints('#fragA .hint, #fragB .hint')">Clear clues</span>
-163            <button class="secondary" onclick="submitQ2()">Submit Q2</button>
-164            <span id="msg2" class="msg"></span>
-165          </div>
-166        </div>
-167
-168        <div class="q" id="q3">
-169          <label>What problem(s) was it trying to solve? <em>(Click all that apply)</em></label>
-170          <div class="options">
-171            <label><input type="checkbox" name="problems" value="unity"> Lack of unity among states / securing interstate rights</label>
-172            <label><input type="checkbox" name="problems" value="foreign"> Preventing foreign entanglements & diplomatic conflicts</label>
-173            <label><input type="checkbox" name="problems" value="standing"> Limiting standing armies in peacetime</label>
-174          </div>
-175          <div class="btnbar">
-176            <button class="ghost" onclick="persistHints('#fragA .hint, #fragB .hint, #fragC .hint, #fragD .hint, #fragF .hint')">Need a clue?</button>
-177            <span class="link" onclick="clearHints('#fragA .hint, #fragB .hint, #fragC .hint, #fragD .hint, #fragF .hint')">Clear clues</span>
-178            <button class="secondary" onclick="submitQ3()">Submit Q3</button>
-179            <span id="msg3" class="msg"></span>
-180          </div>
-181        </div>
-182
-183        <div class="q" id="q4"> ... </div>
-184        <div class="q" id="q5"> ... (NOTE: your button calls submitQ6, but it should call submitQ5)</div>
-185        <div class="q" id="q6"> ... (NOTE: your button calls submitQ3, but it should call submitQ6)</div>
-186        <div class="q" id="q7"> ... </div>
-187        <div class="q" id="q8"> ... </div>
-188
-189      </section>
-190    </main>
-191
-192    <footer>
-193      <script>
-194        // Apply parchment background
-195        document.querySelectorAll('.paper').forEach(el => {
-196          el.style.background = "url(data:image/jpeg;base64,[[BASE64…TRUNCATED]])";
-197          el.style.backgroundRepeat = 'repeat-x';
-198          el.style.backgroundSize = 'auto 100%';
-199          el.style.backgroundPosition = 'center';
-200        });
-201
-202        // Persist & clear hint highlights
-203        function persistHints(selector){ document.querySelectorAll(selector).forEach(el => el.classList.add('active')); }
-204        function clearHints(selector){ document.querySelectorAll(selector).forEach(el => el.classList.remove('active')); }
-205
-206        // Q submissions
-207        function submitQ1(){ ... }
-208        function submitQ2(){ ... }
-209        function submitQ3(){ ... }
-210        function submitQ4(){ ... }
-211        function submitQ5(){ ... }
-212        function submitQ6(){ ... }
-213        function submitQ7(){ ... }
-214        function submitQ8(){ ... }
-215
-216        // Exit logic: save URL, return, and close
-217        const urlInput = document.getElementById('returnUrl');
-218        const saveBtn = document.getElementById('saveUrl');
-219        const goBackBtn = document.getElementById('goBack');
-220        const closeBtn = document.getElementById('closeWin');
-221        ...
-222      </script>
-223    </footer>
-224  </body>
-225  </html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fragments Quiz</title>
+  <style>
+    :root{
+      --bg:#0b1220;
+      --card:#111a2e;
+      --text:#e8eefc;
+      --muted:#a9b7da;
+      --border:#243252;
+      --good:#39d98a;
+      --bad:#ff6b6b;
+      --accent:#7aa2ff;
+      --shadow: 0 12px 30px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background: radial-gradient(1200px 600px at 20% 0%, #142246 0%, var(--bg) 55%) fixed;
+      color:var(--text);
+      line-height:1.35;
+      padding:24px;
+    }
+    .wrap{max-width: 980px; margin: 0 auto;}
+    header{
+      display:flex; align-items:flex-start; justify-content:space-between; gap:16px;
+      margin-bottom:16px;
+    }
+    h1{font-size:20px; margin:0; letter-spacing:.2px;}
+    .sub{color:var(--muted); font-size:13px; margin-top:6px;}
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+      border:1px solid var(--border);
+      border-radius:14px;
+      box-shadow: var(--shadow);
+      padding:18px;
+    }
+    .row{display:flex; gap:12px; flex-wrap:wrap; align-items:center;}
+    .pill{
+      display:inline-flex; gap:8px; align-items:center;
+      padding:6px 10px; border-radius:999px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+      font-size:12px;
+    }
+    .pill b{color:var(--text); font-weight:600;}
+    .qhead{
+      display:flex; justify-content:space-between; gap:12px; align-items:flex-start;
+      margin-bottom:10px;
+    }
+    .qnum{
+      font-size:12px; color:var(--muted); letter-spacing:.12em; text-transform:uppercase;
+    }
+    .prompt{
+      font-size:18px; margin:6px 0 0 0;
+    }
+    .hintline{
+      margin-top:8px;
+      font-size:13px;
+      color:var(--muted);
+    }
+    .choices{margin-top:14px; display:grid; gap:10px;}
+    .choice{
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:10px 12px;
+      background: rgba(255,255,255,.02);
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      transition: transform .05s ease, border-color .15s ease, background .15s ease;
+    }
+    .choice:hover{border-color:#34508a; background: rgba(122,162,255,.06);}
+    /* Fix: consistent circles for radios and squares for checkboxes via custom controls */
+    .control{
+      flex:0 0 auto;
+      width:20px; height:20px;
+      margin-top:2px;
+      border:2px solid #4a5f93;
+      background: rgba(0,0,0,.15);
+      position:relative;
+    }
+    .control.radio{border-radius:999px;}
+    .control.checkbox{border-radius:6px;}
+
+    input[type="radio"], input[type="checkbox"]{
+      /* keep input accessible but hidden */
+      position:absolute;
+      opacity:0;
+      pointer-events:none;
+    }
+    .choice label{
+      display:flex; gap:10px; align-items:flex-start; width:100%;
+      cursor:pointer;
+      position:relative;
+    }
+    .choice .text{margin-top:1px;}
+    .choice:has(input:focus-visible){
+      outline: 3px solid rgba(122,162,255,.35);
+      outline-offset:2px;
+    }
+    .choice:has(input:checked){
+      border-color:#4f74d6;
+      background: rgba(122,162,255,.10);
+    }
+    /* filled dot for radios */
+    .choice:has(input[type="radio"]:checked) .control.radio::after{
+      content:"";
+      position:absolute; inset:4px;
+      border-radius:999px;
+      background: var(--accent);
+      box-shadow: 0 0 0 3px rgba(122,162,255,.25);
+    }
+    /* checkmark for checkboxes */
+    .choice:has(input[type="checkbox"]:checked) .control.checkbox::after{
+      content:"";
+      position:absolute;
+      left:5px; top:1px;
+      width:6px; height:12px;
+      border: solid var(--accent);
+      border-width: 0 3px 3px 0;
+      transform: rotate(45deg);
+    }
+
+    .actions{
+      margin-top:16px;
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between;
+    }
+    .leftActions, .rightActions{display:flex; gap:10px; flex-wrap:wrap; align-items:center;}
+    button{
+      appearance:none;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      color: var(--text);
+      border-radius:12px;
+      padding:10px 12px;
+      font-weight:600;
+      cursor:pointer;
+      transition: transform .05s ease, background .15s ease, border-color .15s ease;
+    }
+    button:hover{border-color:#34508a; background: rgba(122,162,255,.06);}
+    button:active{transform: translateY(1px);}
+    button.primary{
+      border-color:#3a5fc8;
+      background: rgba(122,162,255,.16);
+    }
+    button.danger{
+      border-color:#6b2a2a;
+      background: rgba(255,107,107,.10);
+    }
+    button:disabled{
+      opacity:.5;
+      cursor:not-allowed;
+    }
+    .revealBox{
+      margin-top:14px;
+      border:1px dashed #35508a;
+      border-radius:12px;
+      padding:12px;
+      background: rgba(122,162,255,.06);
+    }
+    .revealTitle{
+      font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted);
+      margin:0 0 8px 0;
+    }
+    .revealItem{
+      margin:0;
+      padding:8px 10px;
+      border-radius:10px;
+      background: rgba(0,0,0,.18);
+      border:1px solid rgba(255,255,255,.06);
+      color: var(--text);
+      font-size:14px;
+    }
+    .feedback{
+      margin-top:14px;
+      border-radius:12px;
+      padding:12px;
+      border:1px solid var(--border);
+      background: rgba(0,0,0,.18);
+    }
+    .feedback.good{border-color: rgba(57,217,138,.45); background: rgba(57,217,138,.08);}
+    .feedback.bad{border-color: rgba(255,107,107,.45); background: rgba(255,107,107,.08);}
+    .feedback h3{margin:0 0 6px 0; font-size:14px;}
+    .feedback p{margin:0; color:var(--muted); font-size:13px;}
+    .kicker{color:var(--muted); font-size:12px; margin-top:2px;}
+    footer{margin-top:14px; color:var(--muted); font-size:12px;}
+    .sr-only{
+      position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden;
+      clip:rect(0,0,0,0); white-space:nowrap; border:0;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>Fragments Quiz</h1>
+        <div class="sub">Numbered questions • consistent radio buttons • progressive reveals (3 levels)</div>
+      </div>
+      <div class="row">
+        <div class="pill"><span>Progress</span> <b id="progressLabel">1 / 8</b></div>
+        <div class="pill"><span>Score</span> <b id="scoreLabel">0</b></div>
+      </div>
+    </header>
+
+    <main class="card" id="app" aria-live="polite"></main>
+
+    <footer>
+      Tip: Edit the question text, choices, and “Re-read Fragment …” lines inside the <code>QUESTIONS</code> array.
+    </footer>
+  </div>
+
+  <script>
+    // ====== QUESTIONS (paste-friendly, code-ready) ======
+    const QUESTIONS = [
+      {
+        id: "q1",
+        type: "single",
+        prompt: "Who was the intended audience?",
+        choices: [
+          { text: "Delegates of the states in Congress assembled", correct: true },
+          { text: "Representatives directly elected by citizens", correct: false },
+          { text: "Military leaders coordinating defense", correct: false },
+          { text: "Foreign diplomats observing the agreement", correct: false },
+          { text: "A single executive authority", correct: false },
+        ],
+        reveals: [
+          "Who is described as having authority to act in this system?",
+          "Is power given to individuals, or to political units?",
+          "Re-read Fragment E, which explains how Congress is formed and who participates."
+        ]
+      },
+      {
+        id: "q2",
+        type: "multi",
+        prompt: "What problem(s) was this document trying to solve?",
+        subtitle: "(Select all that apply)",
+        choices: [
+          { text: "Lack of unity among states / securing interstate rights", correct: true },
+          { text: "Creating a uniform national economy", correct: false },
+          { text: "Preventing internal rebellions", correct: false },
+          { text: "Avoiding all foreign involvement", correct: false },
+          { text: "Enforcing laws within states", correct: false },
+        ],
+        reveals: [
+          "What conflicts might arise if states acted completely independently?",
+          "Notice repeated rules about treatment across state lines.",
+          "Re-read Fragments A and B, which describe rights and trade between states."
+        ]
+      },
+      {
+        id: "q3",
+        type: "single",
+        prompt: "What powers are clearly granted in this document?",
+        choices: [
+          { text: "Coordination among states", correct: true },
+          { text: "Authority to tax individuals directly", correct: false },
+          { text: "Power to enforce laws within states", correct: false },
+          { text: "Regulation of internal state commerce", correct: false },
+          { text: "Command of a permanent national army", correct: false },
+        ],
+        reveals: [
+          "Focus on what the document explicitly allows—not what it discusses.",
+          "Does the text describe enforcement or cooperation?",
+          "Re-read Fragments E and F, focusing on what Congress can actually do."
+        ]
+      },
+      {
+        id: "q4",
+        type: "multi",
+        prompt: "What problems does the document seem most concerned with?",
+        subtitle: "(Select all that apply)",
+        choices: [
+          { text: "Lack of unity between states", correct: true },
+          { text: "Collective defense", correct: true },
+          { text: "Weak central authority", correct: true },
+          { text: "Protecting individual civil liberties", correct: false },
+          { text: "Promoting economic growth", correct: false },
+          { text: "Encouraging popular participation", correct: false },
+          { text: "Expanding national territory", correct: false },
+        ],
+        reveals: [
+          "Which concerns appear in more than one fragment?",
+          "Which problems require cooperation rather than command?",
+          "Re-read Fragments A, B, D, and F and look for repeated themes."
+        ]
+      },
+      {
+        id: "q5",
+        type: "multi",
+        prompt: "Why might humans have created it this way?",
+        subtitle: "(Select all that apply)",
+        choices: [
+          { text: "Preserve state sovereignty while coordinating defense & diplomacy", correct: true },
+          { text: "Prefer citizen militias over standing armies", correct: true },
+          { text: "Facilitate cross-state movement of people/property without new duties", correct: true },
+          { text: "Use supermajority rules to protect minority states on major actions", correct: true },
+          { text: "Enable rapid national decision-making", correct: false },
+          { text: "Establish a strong centralized executive", correct: false },
+          { text: "Centralize economic regulation", correct: false },
+          { text: "Encourage national unity through authority", correct: false },
+        ],
+        reveals: [
+          "What does this system make deliberately difficult?",
+          "Which rules slow decisions or limit power?",
+          "Re-read Fragments D and F (military limits and voting rules)."
+        ]
+      },
+      {
+        id: "q6",
+        type: "single",
+        prompt: "Based on the text alone, what fears or experiences shaped the authors?",
+        choices: [
+          { text: "Fear of centralized tyranny", correct: true },
+          { text: "Distrust of citizen participation", correct: false },
+          { text: "Fear of economic competition", correct: false },
+          { text: "Desire for long-term political permanence", correct: false },
+          { text: "Anxiety over cultural diversity", correct: false },
+        ],
+        reveals: [
+          "What type of power is most restricted in this document?",
+          "Why might concentrated authority be treated cautiously?",
+          "Re-read Fragments D and E, especially limits on military and enforcement power."
+        ]
+      },
+      {
+        id: "q7",
+        type: "single",
+        prompt: "What does this document reveal these beings fear most?",
+        choices: [
+          { text: "Fragmentation and disunity", correct: true },
+          { text: "Too much popular participation", correct: false },
+          { text: "Economic stagnation", correct: false },
+          { text: "Foreign cultural influence", correct: false },
+          { text: "Regional inequality", correct: false },
+        ],
+        reveals: [
+          "What outcome would make this agreement unnecessary?",
+          "Why repeat rules about cooperation across states?",
+          "Re-read Fragments A, B, and F, noting unity language."
+        ]
+      },
+      {
+        id: "q8",
+        type: "single",
+        prompt: "Based on the rules in this document, what major problem is most likely to emerge over time?",
+        choices: [
+          { text: "The national government will struggle to act quickly or decisively", correct: true },
+          { text: "States will lose their independence to the central government", correct: false },
+          { text: "Citizens will gain too much direct political power", correct: false },
+          { text: "The military will become too powerful and dominate politics", correct: false },
+          { text: "Economic growth will be tightly controlled by Congress", correct: false },
+        ],
+        reveals: [
+          "What does this system make deliberately difficult to do?",
+          "Look for rules that require large agreement before major action can happen.",
+          "Re-read Fragments F (voting thresholds) and E (structure of Congress) and consider what happens when states disagree."
+        ],
+        notes:
+          "Wrong answers are tempting because they project later Constitution-era fears backward, confuse limits on power with expansion of power, and assume outcomes not supported by enforcement rules."
+      }
+    ];
+
+    // ====== APP STATE ======
+    let idx = 0;
+    let score = 0;
+    const answered = new Array(QUESTIONS.length).fill(false);
+    const revealCountByQ = new Array(QUESTIONS.length).fill(0); // 0..3
+    const userAnswers = new Array(QUESTIONS.length).fill(null); // Set() for multi, string index for single
+
+    // ====== HELPERS ======
+    const el = (tag, attrs = {}, ...children) => {
+      const node = document.createElement(tag);
+      for (const [k,v] of Object.entries(attrs)) {
+        if (k === "class") node.className = v;
+        else if (k === "html") node.innerHTML = v;
+        else if (k.startsWith("on") && typeof v === "function") node.addEventListener(k.slice(2), v);
+        else node.setAttribute(k, v);
+      }
+      for (const c of children) {
+        if (c == null) continue;
+        node.appendChild(typeof c === "string" ? document.createTextNode(c) : c);
+      }
+      return node;
+    };
+
+    function updateTopBar(){
+      document.getElementById("progressLabel").textContent = `${idx+1} / ${QUESTIONS.length}`;
+      document.getElementById("scoreLabel").textContent = `${score}`;
+    }
+
+    function getCorrectSet(q){
+      const s = new Set();
+      q.choices.forEach((c,i)=>{ if (c.correct) s.add(String(i)); });
+      return s;
+    }
+
+    function setsEqual(a,b){
+      if (a.size !== b.size) return false;
+      for (const x of a) if (!b.has(x)) return false;
+      return true;
+    }
+
+    function currentSelection(q){
+      const name = q.id;
+      if (q.type === "single") {
+        const checked = document.querySelector(`input[name="${name}"]:checked`);
+        return checked ? checked.value : null;
+      } else {
+        const checks = document.querySelectorAll(`input[name="${name}"]:checked`);
+        const s = new Set();
+        checks.forEach(n => s.add(n.value));
+        return s;
+      }
+    }
+
+    function render(){
+      updateTopBar();
+      const app = document.getElementById("app");
+      app.innerHTML = "";
+
+      const q = QUESTIONS[idx];
+
+      // Header
+      const qHeadLeft = el("div", {},
+        el("div", { class: "qnum" }, `Question ${idx+1}`),
+        el("div", { class: "prompt" }, q.prompt),
+        q.subtitle ? el("div", { class: "hintline" }, q.subtitle) : null
+      );
+
+      const qHeadRight = el("div", { class: "row" },
+        el("div", { class: "pill" }, "Type: ", el("b", {}, q.type === "multi" ? "Select all" : "Single choice"))
+      );
+
+      app.appendChild(el("div", { class: "qhead" }, qHeadLeft, qHeadRight));
+
+      // Choices
+      const choices = el("div", { class: "choices" });
+      const inputType = q.type === "multi" ? "checkbox" : "radio";
+
+      q.choices.forEach((c,i)=>{
+        const value = String(i);
+        const inputId = `${q.id}_${i}`;
+
+        // input
+        const input = el("input", { type: inputType, name: q.id, id: inputId, value });
+
+        // restore previous selection
+        const prev = userAnswers[idx];
+        if (q.type === "single" && typeof prev === "string" && prev === value) input.checked = true;
+        if (q.type === "multi" && prev instanceof Set && prev.has(value)) input.checked = true;
+
+        // custom control
+        const control = el("span", { class: `control ${inputType === "radio" ? "radio" : "checkbox"}`, "aria-hidden": "true" });
+
+        const label = el("label", { for: inputId },
+          control,
+          input,
+          el("div", { class: "text" }, c.text)
+        );
+
+        choices.appendChild(el("div", { class: "choice" }, label));
+      });
+
+      app.appendChild(choices);
+
+      // Reveals (progressive)
+      const revealShown = revealCountByQ[idx];
+      if (revealShown > 0){
+        const box = el("div", { class: "revealBox" },
+          el("div", { class: "revealTitle" }, "Progressive reveals")
+        );
+        for (let r = 0; r < revealShown; r++){
+          box.appendChild(el("p", { class: "revealItem" }, `Reveal ${r+1}: ${q.reveals[r]}`));
+        }
+        app.appendChild(box);
+      }
+
+      // Feedback (after answering)
+      if (answered[idx]) {
+        const correctSet = getCorrectSet(q);
+        const ua = userAnswers[idx];
+
+        let isCorrect = false;
+        if (q.type === "single") isCorrect = (typeof ua === "string") && correctSet.has(ua) && correctSet.size === 1;
+        else isCorrect = (ua instanceof Set) && setsEqual(ua, correctSet);
+
+        const fb = el("div", { class: `feedback ${isCorrect ? "good" : "bad"}` },
+          el("h3", {}, isCorrect ? "✅ Correct" : "❌ Not quite"),
+        );
+
+        if (!isCorrect) {
+          // show correct answer(s)
+          const correctTexts = [];
+          q.choices.forEach((c,i)=>{ if (c.correct) correctTexts.push(c.text); });
+          fb.appendChild(el("p", {}, `Correct answer${correctTexts.length>1 ? "s" : ""}: `, correctTexts.join(" • ")));
+        } else {
+          fb.appendChild(el("p", {}, "Nice — your selection matches the key."));
+        }
+
+        if (q.notes) {
+          fb.appendChild(el("div", { class: "kicker" }, q.notes));
+        }
+
+        app.appendChild(fb);
+      }
+
+      // Actions
+      const submitBtn = el("button", {
+        class: "primary",
+        onClick: () => onSubmit()
+      }, answered[idx] ? "Answered" : "Submit");
+
+      submitBtn.disabled = answered[idx];
+
+      const revealBtn = el("button", {
+        onClick: () => onReveal()
+      }, revealCountByQ[idx] >= 3 ? "All reveals shown" : "Reveal next clue");
+
+      revealBtn.disabled = revealCountByQ[idx] >= 3;
+
+      const prevBtn = el("button", {
+        onClick: () => { idx = Math.max(0, idx-1); render(); }
+      }, "← Previous");
+
+      prevBtn.disabled = idx === 0;
+
+      const nextBtn = el("button", {
+        onClick: () => { idx = Math.min(QUESTIONS.length-1, idx+1); render(); }
+      }, "Next →");
+
+      // lock "Next" until answered, except allow review if later questions already reached
+      nextBtn.disabled = (idx < QUESTIONS.length - 1) && !answered[idx];
+
+      const resetBtn = el("button", { class:"danger", onClick: () => onReset() }, "Reset quiz");
+
+      const leftActions = el("div", { class:"leftActions" }, prevBtn, nextBtn);
+      const rightActions = el("div", { class:"rightActions" }, revealBtn, submitBtn, resetBtn);
+
+      app.appendChild(el("div", { class:"actions" }, leftActions, rightActions));
+
+      // Persist selection as user clicks (so navigation doesn't lose it)
+      app.querySelectorAll(`input[name="${q.id}"]`).forEach(inp=>{
+        inp.addEventListener("change", () => {
+          const sel = currentSelection(q);
+          userAnswers[idx] = sel;
+        });
+      });
+    }
+
+    function onReveal(){
+      const q = QUESTIONS[idx];
+      const cur = revealCountByQ[idx];
+      revealCountByQ[idx] = Math.min(3, cur + 1);
+      render();
+    }
+
+    function onSubmit(){
+      const q = QUESTIONS[idx];
+      const sel = currentSelection(q);
+
+      // Require a selection before submitting
+      if (q.type === "single" && sel === null) {
+        alert("Choose an answer before submitting.");
+        return;
+      }
+      if (q.type === "multi" && (sel == null || sel.size === 0)) {
+        alert("Choose at least one option before submitting.");
+        return;
+      }
+
+      userAnswers[idx] = sel;
+
+      const correctSet = getCorrectSet(q);
+      let isCorrect = false;
+
+      if (q.type === "single") {
+        isCorrect = correctSet.has(sel) && correctSet.size === 1;
+      } else {
+        isCorrect = setsEqual(sel, correctSet);
+      }
+
+      if (!answered[idx]) {
+        answered[idx] = true;
+        if (isCorrect) score += 1;
+      }
+
+      // auto-advance if correct (optional); keeping gentle: advance on any submit if not last
+      if (idx < QUESTIONS.length - 1) {
+        idx += 1;
+      }
+      render();
+    }
+
+    function onReset(){
+      idx = 0;
+      score = 0;
+      for (let i=0; i<answered.length; i++) answered[i] = false;
+      for (let i=0; i<revealCountByQ.length; i++) revealCountByQ[i] = 0;
+      for (let i=0; i<userAnswers.length; i++) userAnswers[i] = null;
+      render();
+    }
+
+    // boot
+    render();
+  </script>
+</body>
+</html>
