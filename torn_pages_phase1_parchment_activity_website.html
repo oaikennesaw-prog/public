@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root{
-      --bg:#000000;
+      --bg:#000000;         /* BLACK background */
       --panel:#1c2541;
       --ink:#1b1b1b;
       --accent:#5bc0be;
@@ -21,12 +21,38 @@
       background: var(--bg);
       color:#e8eef7;
     }
+
     header{
+      position: sticky;
+      top: 0;
+      z-index: 20;
       padding:1rem 1.5rem;
-      background:#0d1b2a;
+      background:#000; /* match black background */
       border-bottom:2px solid var(--accent);
     }
-    header h1{ margin:0; }
+    header h1{ margin:0; padding-right: 48px; }
+
+    /* Top-right close button */
+    .cornerClose{
+      position:absolute;
+      right: 14px;
+      top: 14px;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.06);
+      color:#fff;
+      font-size: 18px;
+      font-weight: 900;
+      line-height: 36px;
+      text-align: center;
+      cursor: pointer;
+      user-select: none;
+    }
+    .cornerClose:hover{
+      background: rgba(255,255,255,0.12);
+    }
 
     main{
       display:grid;
@@ -255,39 +281,13 @@
     }
     .revealBox strong{ color:#d7fff7; }
     .revealText{ color:#e8eef7; line-height:1.4; margin-top:0.3rem; }
-
-    footer{
-      margin: 0 1rem 1rem;
-      background:#0d1b2a;
-      border:1px solid var(--border);
-      border-radius:12px;
-      padding:0.8rem;
-    }
-    .exitbar{
-      display:flex;
-      flex-wrap:wrap;
-      gap:0.6rem;
-      align-items:center;
-    }
-    .exitbar input[type="url"]{
-      flex: 1 1 280px;
-      background:#0e1a31;
-      color:#e8eef7;
-      border:1px solid var(--border);
-      border-radius:8px;
-      padding:0.5rem;
-    }
-    .help{
-      font-size:0.9rem;
-      color:var(--muted);
-      margin:0.6rem 0 0;
-    }
   </style>
 </head>
 
 <body>
   <header>
     <h1>Alien Archivists · Phase I: Parchment Scroll</h1>
+    <div class="cornerClose" id="cornerClose" title="Close">✕</div>
   </header>
 
   <main>
@@ -392,28 +392,25 @@
       <div class="progress" aria-label="Progress tracker">
         <h3>Progress</h3>
         <div id="dots" class="steps" aria-label="Question progress dots"></div>
+
         <div class="btnbar" style="margin-top:0.7rem;">
           <button class="ghost" id="resetProgress">Reset progress</button>
+          <button class="ghost" id="emailResults">Email my results</button>
+          <button class="ghost" id="copyResults">Copy results</button>
           <span id="allDoneMsg" class="msg"></span>
+        </div>
+
+        <div class="revealBox" id="emailHelp" style="display:block; margin-top:0.7rem;">
+          <strong>Email note</strong>
+          <div class="revealText">
+            This opens your email app with the results pre-filled. It does not send automatically.
+          </div>
         </div>
       </div>
 
       <div id="questions"></div>
     </section>
   </main>
-
-  <footer>
-    <div class="exitbar">
-      <input id="returnUrl" type="url" placeholder="Paste the site to return to (e.g., https://radow.kennesaw.edu)" />
-      <button id="saveUrl" class="ghost">Save return link</button>
-      <button id="goBack" class="secondary">Return to saved site</button>
-      <button id="closeWin">Close this window</button>
-    </div>
-    <p class="help">
-      Tip: Some browsers block closing tabs that were not opened by script. If the close button does not work,
-      the page will try to redirect to your saved site. You can also use Ctrl/⌘+W to close the tab.
-    </p>
-  </footer>
 
   <script>
     /***********************
@@ -588,20 +585,14 @@
           "“Why repeat rules about cooperation, shared defense, and mutual treatment?”",
           "“Re-read Fragments A, B, and F and look for repeated unity language.”"
         ],
-        highlightOnReveal3: "#fragA .hint, #fragB .hint, #fragF .hint",
-        extraNote: [
-          "Why these wrong answers are tempting:",
-          "• They sound like reasonable societal fears",
-          "• They are not repeated or structurally addressed in the text",
-          "• The document regulates cooperation, not culture or growth"
-        ].join("<br>")
+        highlightOnReveal3: "#fragA .hint, #fragB .hint, #fragF .hint"
       },
     ];
 
     /********************
      * Save/Load state
      ********************/
-    const KEY = "phase1:progress:unlocked:v1";
+    const KEY = "phase1:progress:unlocked:v2";
 
     function defaultState(){
       return {
@@ -735,14 +726,6 @@
         revealBox.innerHTML = `<strong>Progressive reveal</strong><div class="revealText" id="revealText${q.id}"></div>`;
         box.appendChild(revealBox);
 
-        if (q.extraNote){
-          const extra = document.createElement("div");
-          extra.className = "revealBox";
-          extra.style.display = "block";
-          extra.innerHTML = `<strong>Note</strong><div class="revealText">${q.extraNote}</div>`;
-          box.appendChild(extra);
-        }
-
         container.appendChild(box);
       });
     }
@@ -764,7 +747,6 @@
       const which = Math.min(idx, q.reveals.length - 1);
       text.innerHTML = `<strong>Reveal ${which + 1}:</strong><br>${q.reveals[which]}`;
 
-      // On Reveal 3, highlight related fragments
       if (which === 2 && q.highlightOnReveal3){
         persistHints(q.highlightOnReveal3);
       }
@@ -808,6 +790,50 @@
 
       updateUI();
     }
+
+    /********************
+     * Results (copy + email)
+     ********************/
+    function buildResultsText(){
+      const state = loadState();
+      const lines = [];
+      lines.push("Alien Archivists – Phase I Results");
+      lines.push("----------------------------------");
+      QUESTIONS.forEach(q => {
+        const done = state.done[q.id - 1] ? "Correct ✅" : "Not completed";
+        const ans = getUserAnswer(q);
+        let ansText = "";
+        if (q.type === "radio"){
+          ansText = ans ? q.options.find(o => o.value === ans)?.label ?? ans : "(no answer selected)";
+        } else {
+          if (!Array.isArray(ans) || ans.length === 0) ansText = "(no answers selected)";
+          else ansText = ans.map(v => q.options.find(o => o.value === v)?.label ?? v).join("; ");
+        }
+        lines.push(`Q${q.id}: ${done}`);
+        lines.push(`Selected: ${ansText}`);
+        lines.push("");
+      });
+      return lines.join("\n");
+    }
+
+    document.getElementById("copyResults").addEventListener("click", async () => {
+      const txt = buildResultsText();
+      try{
+        await navigator.clipboard.writeText(txt);
+        alert("Results copied to clipboard.");
+      } catch(e){
+        // fallback
+        prompt("Copy your results below:", txt);
+      }
+    });
+
+    document.getElementById("emailResults").addEventListener("click", () => {
+      const txt = buildResultsText();
+      const subject = encodeURIComponent("Alien Archivists – Phase I Results");
+      const body = encodeURIComponent(txt + "\n\n(Generated from the activity page)");
+      // Student email apps will open; they can send to themselves or their instructor.
+      window.location.href = `mailto:?subject=${subject}&body=${body}`;
+    });
 
     /********************
      * UI refresh
@@ -894,41 +920,17 @@
     });
 
     /********************
-     * Exit footer logic
+     * Close corner button
      ********************/
-    const urlInput = document.getElementById('returnUrl');
-    const saveBtn = document.getElementById('saveUrl');
-    const goBackBtn = document.getElementById('goBack');
-    const closeBtn = document.getElementById('closeWin');
-
-    const saved = localStorage.getItem('phase1:returnUrl');
-    if (saved) urlInput.value = saved;
-
-    saveBtn.addEventListener('click', () => {
-      const u = urlInput.value.trim();
-      if (!u) { alert('Paste a valid URL to save.'); return; }
-      try { new URL(u); }
-      catch(e){ alert('That does not look like a valid URL. Include https://'); return; }
-      localStorage.setItem('phase1:returnUrl', u);
-      alert('Return link saved.');
-    });
-
-    goBackBtn.addEventListener('click', () => {
-      const u = localStorage.getItem('phase1:returnUrl');
-      if (u) window.location.href = u;
-      else alert('No saved site yet. Paste and save a URL first.');
-    });
-
-    closeBtn.addEventListener('click', () => {
+    function attemptClose(){
       window.close();
       setTimeout(() => {
         if (!window.closed) {
-          const u = localStorage.getItem('phase1:returnUrl');
-          if (u) window.location.href = u;
-          else alert('Browser blocked closing. Save a return URL or use Ctrl/⌘+W to close the tab.');
+          alert("Your browser blocked closing this tab. You can close it with Ctrl/⌘+W.");
         }
       }, 200);
-    });
+    }
+    document.getElementById("cornerClose").addEventListener("click", attemptClose);
 
     /********************
      * Init
