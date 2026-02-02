@@ -4,19 +4,20 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Document Fragments Quiz</title>
+
   <style>
     :root{
       --bg:#000000;
-      --panel:#111b33;
-      --panel2:#0f1930;
+      --panel:#0c1224;
+      --panel2:#0a1020;
       --text:#f5f7ff;
       --muted:#c6cde6;
-      --border:#3a4a7a;
+      --border:#2b3a66;
       --accent:#7aa2ff;
       --good:#2fbf8f;
       --bad:#e36d6d;
       --focus:#9bd0ff;
-      --shadow: 0 12px 32px rgba(0,0,0,.35);
+      --shadow: 0 12px 32px rgba(0,0,0,.45);
       --radius: 16px;
       --radius2: 12px;
       --max: 980px;
@@ -27,40 +28,118 @@
     body{
       margin:0;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-      background: radial-gradient(1200px 700px at 15% 10%, rgba(122,162,255,.18), transparent 55%),
-                  radial-gradient(900px 600px at 85% 15%, rgba(47,191,143,.12), transparent 55%),
-                  radial-gradient(900px 600px at 80% 90%, rgba(227,109,109,.10), transparent 55%),
-                  var(--bg);
+      background:
+        radial-gradient(1200px 700px at 15% 10%, rgba(122,162,255,.16), transparent 55%),
+        radial-gradient(900px 600px at 85% 15%, rgba(47,191,143,.10), transparent 55%),
+        radial-gradient(900px 600px at 80% 90%, rgba(227,109,109,.08), transparent 55%),
+        var(--bg);
       color: var(--text);
       line-height:1.5;
     }
 
     a{ color:var(--accent); }
 
+    /* Layout */
+    .wrap{
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 18px 16px 48px;
+    }
+
+    header{
+      border-bottom: 1px solid rgba(43,58,102,.6);
+      background: rgba(12,18,36,.35);
+      backdrop-filter: blur(6px);
+    }
+
+    header .wrap{
+      padding-top: 22px;
+      padding-bottom: 22px;
+    }
+
+    h1{
+      margin: 0;
+      font-size: 1.6rem;
+      letter-spacing: .2px;
+    }
+
+    .subtitle{
+      margin: 10px 0 0;
+      color: var(--muted);
+      max-width: 70ch;
+    }
+
+    .card{
+      border: 1px solid rgba(43,58,102,.65);
+      border-radius: var(--radius);
+      background: rgba(12,18,36,.55);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .sectionTop{
+      padding: 16px 18px 14px;
+      border-bottom: 1px solid rgba(43,58,102,.55);
+      background: rgba(12,18,36,.35);
+    }
+
+    .sectionTop h2{
+      margin: 0;
+      font-size: 1.2rem;
+    }
+
+    .sectionMeta{
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: .96rem;
+      max-width: 80ch;
+    }
+
+    .sectionBody{
+      padding: 16px 18px 18px;
+    }
+
+    /* Skip links */
     .skip-link{
-      position:absolute; left:-999px; top:auto; width:1px; height:1px; overflow:hidden;
+      position:absolute;
+      left:-999px;
+      top:auto;
+      width:1px;
+      height:1px;
+      overflow:hidden;
     }
     .skip-link:focus{
-      left:16px; top:16px; width:auto; height:auto; padding:10px 12px;
-   background-repeat: repeat-x; background-size: auto 100%; background-position: center; width:100%; min-height: 140px; } .paper::before, .paper::after { content:''; position:absolute; left:0; right:0; height:16px; } .paper::before { top:0; background: linear-gradient(to bottom, rgba(0,0,0,0.25), rgba(0,0,0,0)); border-top-left-radius:8px; border-top-right-radius:8px; } .paper::after { bottom:0; background: linear-gradient(to top, rgba(0,0,0,0.25), rgba(0,0,0,0)); border-bottom-left-radius:8px; border-bottom-right-radius:8px; } .paper h3 { margin:0 0 0.6rem; color:#3a3a3a; font-weight:800; letter-spacing:0.02em; padding-left:56px; } .badge { position:absolute; left:12px; top:12px; width:36px; height:36px; border-radius:50%; display:grid; place-items:center; font-weight:900; color:#0b132b; background: var(--accent); box-shadow: 0 2px 8px rgba(0,0,0,0.25); } .stamp { position:absolute; right:8px; top:8px; background: rgba(91,192,190,0.12); color:#236d6b; border:2px dashed #5bc0be; border-radius:6px; font-weight:800; padding:0.2rem 0.5rem; transform: rotate(-6deg); } .paper p { line-height:1.6; font-size:1.05rem; } .missing { background: repeating-linear-gradient(45deg,#eee 0,#eee 6px,#ddd 6px,#ddd 12px); color:#7a7a7a; padding:0 6px; border-radius:4px; border:1px dashed #999; } .hint { font-weight: inherit; background: transparent; border-radius:4px; padding:0 2px; transition: box-shadow .2s ease, background .2s ease, font-weight .2s ease; } .hint.active { font-weight:800; background: rgba(243,209,0,0.25); box-shadow: 0 0 0 3px rgba(243,209,0,0.35); }
+      left:16px;
+      top:16px;
+      width:auto;
+      height:auto;
+      padding:10px 12px;
+      background: rgba(12,18,36,.95);
+      border: 2px solid var(--focus);
+      border-radius: 12px;
+      z-index: 9999;
+    }
 
-<h1>Alien Archivists · Phase I: Parchment Scroll</h1> </header> <main> <section> <div class="papers" aria-label="Parchment fragments"> <figure id="fragA" class="paper" aria-labelledby="fragA-title"> <div class="badge" aria-hidden="true" data-frag="A">A</div> <div class="stamp" aria-hidden="true">Fragment A</div> <h3 id="fragA-title">Privileges & Immunities</h3> <p>… better to secure and perpetuate <span class="hint">mutual friendship</span> and intercourse among the people of the different states in this union, the free inhabitants of each of these states, paupers, vagabonds and fugitives from Justice excepted, shall be entitled to all <span class="hint">privileges and immunities</span> of free citizens …</p> </figure> <figure id="fragB" class="paper" aria-labelledby="fragB-title"> <div class="badge" aria-hidden="true" data-frag="B">B</div> <div class="stamp" aria-hidden="true">Fragment B</div> <h3 id="fragB-title">Trade & Property</h3> <p>… the inhabitants thereof respectively, provided that such restrictions shall not extend so far as to prevent the removal of property imported into any state, to any other State of which the Owner is an inhabitant; provided also that <span class="hint">no imposition, duties or restriction</span> shall be laid by any state, on the property of the united states, or either of them …</p> </figure> <figure id="fragC" class="paper" aria-labelledby="fragC-title"> <div class="badge" aria-hidden="true" data-frag="C">C</div> <div class="stamp" aria-hidden="true">Fragment C</div> <h3 id="fragC-title">Foreign Embassies & Titles</h3> <p>No <span class="missing">[paper torn]</span>, shall <span class="hint">send any embassy</span> to, or receive any embassy from, or enter into any conferrence, agreement, alliance, or <span class="hint">treaty</span>, with any King prince or state; nor shall the united states, in congress assembled, or any of them, grant any <span class="hint">title of nobility</span> …</p> </figure> <figure id="fragD" class="paper" aria-labelledby="fragD-title"> <div class="badge" aria-hidden="true" data-frag="D">D</div> <div class="stamp" aria-hidden="true">Fragment D</div> <h3 id="fragD-title">Standing Forces & Militia</h3> <p>No <span class="hint">vessels of war</span> shall be kept up in time of peace, by any state, except such number only, as shall be deemed necessary by <span class="missing">[paper torn]</span> for the defence of such state, or its trade; nor shall any body of forces be kept up, by any state, in time of peace, except such number only as, in the judgment of <span class="missing">[paper torn]</span> assembled, shall be deemed requisite to garrison the forts necessary for the defence of such state; but every state shall always keep up a <span class="hint">well regulated and disciplined militia</span>, sufficiently armed and accoutred, and shall provide and constantly have ready for use, in public stores, a due number of field pieces and tents, and a proper quantity of <span class="hint">arms, ammunition</span>, and camp equipage.</p> </figure> <figure id="fragE" class="paper" aria-labelledby="fragE-title"> <div class="badge" aria-hidden="true" data-frag="E">E</div> <div class="stamp" aria-hidden="true">Fragment E</div> <h3 id="fragE-title">Ratification</h3> <p>Whereas it hath pleased the Great Governor of the World to incline the hearts of the legislatures we respectively represent in congress, to approve of, and to authorize us to ratify the said articles of confederation and perpetual union, Know Ye, that we, the <span class="hint">undersigned delegates</span>, by virtue of the power and authority to us given for that purpose, do, by these presents, in the name and in behalf of our respective constituents, fully and entirely <span class="hint">ratify and confirm</span> …</p> </figure> <figure id="fragF" class="paper" aria-labelledby="fragF-title"> <div class="badge" aria-hidden="true" data-frag="F">F</div> <div class="stamp" aria-hidden="true">Fragment F</div> <h3 id="fragF-title">Supermajority Rule</h3> <p>… shall never engage in a war, nor grant letters of marque and reprisal in time of peace, nor enter into any treaties or alliances, nor coin money, nor regulate the value thereof nor ..ascertain the sums and expenses necessary for the defence and welfare…, or any of them, nor emit bills, nor borrow money on the credit of the united states, nor appropriate money, nor agree upon the number of vessels of war to be built or purchased, or the number of land or sea forces to be raised, nor appoint a commander in chief of the army or navy, unless <span class="hint">nine states assent</span> to the same, nor shall a question on any other point, except for adjourning from day to day, be determined, unless by the votes of a <span class="hint">majority</span> of the <span class="missing">[paper torn]</span> assembled.</p> </figure> </div> </section>
-
+    /* Fragments (Details grid) */
+    .fragmentsGrid{
+      display:grid;
+      gap: 12px;
     }
     @media (min-width: 820px){
       .fragmentsGrid{ grid-template-columns: 1fr 1fr; }
     }
 
     details{
-      border: 1px solid rgba(58,74,122,.55);
+      border: 1px solid rgba(43,58,102,.65);
       border-radius: var(--radius2);
-      background: rgba(15,25,48,.55);
+      background: rgba(10,16,32,.65);
       overflow:hidden;
     }
     details[open]{
-      border-color: rgba(122,162,255,.6);
-      background: rgba(15,25,48,.7);
+      border-color: rgba(122,162,255,.65);
+      background: rgba(10,16,32,.80);
     }
+
     summary{
       cursor:pointer;
       padding: 12px 12px;
@@ -71,6 +150,7 @@
       gap:10px;
     }
     summary::-webkit-details-marker{ display:none; }
+
     .fragBadge{
       flex:0 0 auto;
       width: 34px;
@@ -82,6 +162,7 @@
       border: 1px solid rgba(122,162,255,.55);
       font-weight: 800;
     }
+
     .fragText{
       padding: 0 12px 12px;
       color: var(--text);
@@ -103,15 +184,16 @@
       margin: 12px 0 0;
     }
 
-    /* QUIZ */
+    /* Quiz */
     .qTop{
       display:flex;
       align-items:flex-start;
       gap: 14px;
       padding: 18px 18px 10px;
-      border-bottom: 1px solid rgba(58,74,122,.45);
-      background: rgba(17,27,51,.35);
+      border-bottom: 1px solid rgba(43,58,102,.55);
+      background: rgba(12,18,36,.25);
     }
+
     .qNum{
       flex:0 0 auto;
       width: 40px;
@@ -124,20 +206,23 @@
       font-weight: 800;
       user-select:none;
     }
+
     .qHead{ flex: 1 1 auto; }
     .qHead h2{
       margin: 0;
       font-size: 1.08rem;
       letter-spacing:.15px;
     }
+
     .qMeta{
       margin-top: 6px;
       color: var(--muted);
       font-size: .95rem;
     }
+
     .qBody{
       padding: 16px 18px 18px;
-      background: rgba(17,27,51,.2);
+      background: rgba(12,18,36,.15);
     }
 
     fieldset{
@@ -146,10 +231,13 @@
       margin: 0;
       min-inline-size: 0;
     }
-    legend{
-      font-weight: 650;
-      margin-bottom: 10px;
-      padding: 0;
+
+    .sr-only{
+      position:absolute;
+      left:-9999px;
+      width:1px;
+      height:1px;
+      overflow:hidden;
     }
 
     .options{
@@ -157,19 +245,21 @@
       gap: 10px;
       margin: 8px 0 0;
     }
+
     .opt{
       display:flex;
       gap: 10px;
       align-items:flex-start;
       padding: 12px 12px;
       border-radius: var(--radius2);
-      border: 1px solid rgba(58,74,122,.55);
-      background: rgba(15,25,48,.55);
+      border: 1px solid rgba(43,58,102,.65);
+      background: rgba(10,16,32,.65);
       transition: transform .08s ease, border-color .12s ease, background .12s ease;
     }
+
     .opt:hover{
-      border-color: rgba(122,162,255,.65);
-      background: rgba(15,25,48,.75);
+      border-color: rgba(122,162,255,.75);
+      background: rgba(10,16,32,.85);
       transform: translateY(-1px);
     }
 
@@ -187,9 +277,16 @@
       display:block;
       width:100%;
     }
+
     .optText{
       display:block;
       font-size: 1rem;
+    }
+
+    .hintNote{
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: .93rem;
     }
 
     .controls{
@@ -202,7 +299,7 @@
 
     button{
       appearance:none;
-      border: 1px solid rgba(122,162,255,.65);
+      border: 1px solid rgba(122,162,255,.7);
       background: rgba(122,162,255,.14);
       color: var(--text);
       padding: 10px 12px;
@@ -212,22 +309,25 @@
       cursor: pointer;
       transition: transform .08s ease, background .12s ease, border-color .12s ease;
     }
+
     button:hover{
       background: rgba(122,162,255,.20);
-      border-color: rgba(122,162,255,.9);
+      border-color: rgba(122,162,255,.95);
       transform: translateY(-1px);
     }
+
     button:disabled{
       opacity: .55;
       cursor: not-allowed;
       transform:none;
     }
+
     .btnSecondary{
-      border-color: rgba(198,205,230,.5);
+      border-color: rgba(198,205,230,.55);
       background: rgba(198,205,230,.08);
     }
     .btnSecondary:hover{
-      border-color: rgba(198,205,230,.8);
+      border-color: rgba(198,205,230,.85);
       background: rgba(198,205,230,.12);
     }
 
@@ -235,42 +335,39 @@
       margin-top: 14px;
       padding: 12px 12px;
       border-radius: 12px;
-      border: 1px solid rgba(58,74,122,.55);
-      background: rgba(15,25,48,.55);
+      border: 1px solid rgba(43,58,102,.65);
+      background: rgba(10,16,32,.65);
     }
     .feedback[hidden]{ display:none; }
     .feedback.good{
-      border-color: rgba(47,191,143,.65);
-      background: rgba(47,191,143,.10);
+      border-color: rgba(47,191,143,.75);
+      background: rgba(47,191,143,.12);
     }
     .feedback.bad{
-      border-color: rgba(227,109,109,.65);
-      background: rgba(227,109,109,.10);
+      border-color: rgba(227,109,109,.75);
+      background: rgba(227,109,109,.12);
     }
 
     .reveals{
       margin-top: 12px;
       border-radius: 12px;
-      border: 1px dashed rgba(198,205,230,.55);
+      border: 1px dashed rgba(198,205,230,.6);
       background: rgba(255,255,255,.03);
       padding: 10px 12px;
     }
+
     .reveals h3{
       margin: 0 0 6px;
       font-size: .98rem;
       color: var(--muted);
       font-weight: 800;
     }
+
     .revealList{
       margin: 0;
       padding-left: 18px;
       display:grid;
       gap: 6px;
-    }
-    .hintNote{
-      margin-top: 10px;
-      color: var(--muted);
-      font-size: .93rem;
     }
 
     /* Focus visibility (WCAG) */
@@ -298,7 +395,7 @@
       <h1>Document Fragments Quiz</h1>
       <p class="subtitle">
         Read the fragments first. Then answer the questions below. Use “Show next clue” for progressive reveals.
-        Keyboard accessible and screen-reader friendly.
+        Fully keyboard accessible and screen-reader friendly.
       </p>
     </div>
   </header>
@@ -320,51 +417,50 @@
 
       <div class="sectionBody">
         <div class="fragmentsGrid" id="fragmentsGrid">
-          <!-- Replace these with your actual fragment text -->
           <details data-frag="A">
-            <summary><span class="fragBadge" aria-hidden="true">A</span>Fragment A</summary>
+            <summary><span class="fragBadge" aria-hidden="true">A</span>Privileges &amp; Immunities</summary>
             <div class="fragText">
-              <p>[Paste Fragment A text here]</p>
+              <p>… better to secure and perpetuate mutual friendship and intercourse among the people of the different states in this union, the free inhabitants of each of these states, paupers, vagabonds and fugitives from Justice excepted, shall be entitled to all privileges and immunities of free citizens …</p>
               <p class="mutedNote">Tip: You can reference “Fragment A” in the questions and clues below.</p>
             </div>
           </details>
 
           <details data-frag="B">
-            <summary><span class="fragBadge" aria-hidden="true">B</span>Fragment B</summary>
+            <summary><span class="fragBadge" aria-hidden="true">B</span>Trade &amp; Property</summary>
             <div class="fragText">
-              <p>[Paste Fragment B text here]</p>
+              <p>… the inhabitants thereof respectively, provided that such restrictions shall not extend so far as to prevent the removal of property imported into any state, to any other State of which the Owner is an inhabitant; provided also that no imposition, duties or restriction shall be laid by any state, on the property of the united states, or either of them …</p>
               <p class="mutedNote">Tip: You can reference “Fragment B” in the questions and clues below.</p>
             </div>
           </details>
 
           <details data-frag="C">
-            <summary><span class="fragBadge" aria-hidden="true">C</span>Fragment C</summary>
+            <summary><span class="fragBadge" aria-hidden="true">C</span>Foreign Embassies &amp; Titles</summary>
             <div class="fragText">
-              <p>[Paste Fragment C text here]</p>
+              <p>No … shall send any embassy to, or receive any embassy from, or enter into any conference, agreement, alliance, or treaty, with any King, prince or state; nor shall the united states, in congress assembled, or any of them, grant any title of nobility …</p>
               <p class="mutedNote">Tip: You can reference “Fragment C” in the questions and clues below.</p>
             </div>
           </details>
 
           <details data-frag="D">
-            <summary><span class="fragBadge" aria-hidden="true">D</span>Fragment D</summary>
+            <summary><span class="fragBadge" aria-hidden="true">D</span>Standing Forces &amp; Militia</summary>
             <div class="fragText">
-              <p>[Paste Fragment D text here]</p>
+              <p>No vessels of war shall be kept up in time of peace, by any state … nor shall any body of forces be kept up, by any state, in time of peace … but every state shall always keep up a well regulated and disciplined militia, sufficiently armed and accoutred … and shall provide … a proper quantity of arms, ammunition, and camp equipage.</p>
               <p class="mutedNote">Tip: You can reference “Fragment D” in the questions and clues below.</p>
             </div>
           </details>
 
           <details data-frag="E">
-            <summary><span class="fragBadge" aria-hidden="true">E</span>Fragment E</summary>
+            <summary><span class="fragBadge" aria-hidden="true">E</span>Ratification</summary>
             <div class="fragText">
-              <p>[Paste Fragment E text here]</p>
+              <p>… we, the undersigned delegates, by virtue of the power and authority to us given for that purpose, do, by these presents, in the name and in behalf of our respective constituents, fully and entirely ratify and confirm …</p>
               <p class="mutedNote">Tip: You can reference “Fragment E” in the questions and clues below.</p>
             </div>
           </details>
 
           <details data-frag="F">
-            <summary><span class="fragBadge" aria-hidden="true">F</span>Fragment F</summary>
+            <summary><span class="fragBadge" aria-hidden="true">F</span>Supermajority Rule</summary>
             <div class="fragText">
-              <p>[Paste Fragment F text here]</p>
+              <p>… shall never engage in a war … nor enter into any treaties or alliances … nor appropriate money … nor appoint a commander in chief … unless nine states assent to the same, nor shall a question on any other point … be determined, unless by the votes of a majority … assembled.</p>
               <p class="mutedNote">Tip: You can reference “Fragment F” in the questions and clues below.</p>
             </div>
           </details>
@@ -378,7 +474,8 @@
       <div class="sectionTop">
         <h2 id="quiz_title">Quiz</h2>
         <div class="sectionMeta">
-          Answer each question, then use “Check answer” for feedback. Use “Reset” to clear answers. Use “Show next clue” for progressive reveals.
+          Answer each question, then use “Check answer” for feedback. Use “Reset” to clear answers.
+          Use “Show next clue” for progressive reveals.
         </div>
       </div>
       <div class="sectionBody" style="padding:0;">
@@ -563,7 +660,7 @@
     const quizEl = document.getElementById("quiz");
 
     function escapeHtml(str){
-      return str.replace(/[&<>"']/g, (m) => ({
+      return String(str).replace(/[&<>"']/g, (m) => ({
         "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"
       }[m]));
     }
@@ -592,7 +689,7 @@
       }).join("");
 
       return `
-        <section class="card" aria-labelledby="${q.id}_title">
+        <section class="card" aria-labelledby="${q.id}_title" style="margin:16px 0;">
           <div class="qTop">
             <div class="qNum" aria-hidden="true">${q.number}</div>
             <div class="qHead">
@@ -607,9 +704,7 @@
           <div class="qBody">
             <form data-qid="${q.id}">
               <fieldset>
-                <legend class="sr-only" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;">
-                  ${escapeHtml(q.title)}
-                </legend>
+                <legend class="sr-only">${escapeHtml(q.title)}</legend>
 
                 <div class="options">
                   ${optionsHtml}
@@ -763,7 +858,7 @@
       btn.dataset.step = "0";
     });
 
-    // --- FRAGMENT CONTROLS ---
+    // Fragment controls
     const expandAllBtn = document.getElementById("expandAll");
     const collapseAllBtn = document.getElementById("collapseAll");
     const allDetails = () => Array.from(document.querySelectorAll("#fragmentsGrid details"));
