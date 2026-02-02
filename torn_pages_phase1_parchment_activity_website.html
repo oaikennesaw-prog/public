@@ -6,7 +6,7 @@
   <title>Document Fragments Quiz</title>
   <style>
     :root{
-      --bg:#0b1220;
+      --bg:#000000;
       --panel:#111b33;
       --panel2:#0f1930;
       --text:#f5f7ff;
@@ -36,43 +36,74 @@
     }
 
     a{ color:var(--accent); }
+
     .skip-link{
       position:absolute; left:-999px; top:auto; width:1px; height:1px; overflow:hidden;
     }
     .skip-link:focus{
       left:16px; top:16px; width:auto; height:auto; padding:10px 12px;
-      background: var(--panel); border: 2px solid var(--focus); border-radius: 10px;
-      z-index: 9999;
+   background-repeat: repeat-x; background-size: auto 100%; background-position: center; width:100%; min-height: 140px; } .paper::before, .paper::after { content:''; position:absolute; left:0; right:0; height:16px; } .paper::before { top:0; background: linear-gradient(to bottom, rgba(0,0,0,0.25), rgba(0,0,0,0)); border-top-left-radius:8px; border-top-right-radius:8px; } .paper::after { bottom:0; background: linear-gradient(to top, rgba(0,0,0,0.25), rgba(0,0,0,0)); border-bottom-left-radius:8px; border-bottom-right-radius:8px; } .paper h3 { margin:0 0 0.6rem; color:#3a3a3a; font-weight:800; letter-spacing:0.02em; padding-left:56px; } .badge { position:absolute; left:12px; top:12px; width:36px; height:36px; border-radius:50%; display:grid; place-items:center; font-weight:900; color:#0b132b; background: var(--accent); box-shadow: 0 2px 8px rgba(0,0,0,0.25); } .stamp { position:absolute; right:8px; top:8px; background: rgba(91,192,190,0.12); color:#236d6b; border:2px dashed #5bc0be; border-radius:6px; font-weight:800; padding:0.2rem 0.5rem; transform: rotate(-6deg); } .paper p { line-height:1.6; font-size:1.05rem; } .missing { background: repeating-linear-gradient(45deg,#eee 0,#eee 6px,#ddd 6px,#ddd 12px); color:#7a7a7a; padding:0 6px; border-radius:4px; border:1px dashed #999; } .hint { font-weight: inherit; background: transparent; border-radius:4px; padding:0 2px; transition: box-shadow .2s ease, background .2s ease, font-weight .2s ease; } .hint.active { font-weight:800; background: rgba(243,209,0,0.25); box-shadow: 0 0 0 3px rgba(243,209,0,0.35); }
+
+<h1>Alien Archivists · Phase I: Parchment Scroll</h1> </header> <main> <section> <div class="papers" aria-label="Parchment fragments"> <figure id="fragA" class="paper" aria-labelledby="fragA-title"> <div class="badge" aria-hidden="true" data-frag="A">A</div> <div class="stamp" aria-hidden="true">Fragment A</div> <h3 id="fragA-title">Privileges & Immunities</h3> <p>… better to secure and perpetuate <span class="hint">mutual friendship</span> and intercourse among the people of the different states in this union, the free inhabitants of each of these states, paupers, vagabonds and fugitives from Justice excepted, shall be entitled to all <span class="hint">privileges and immunities</span> of free citizens …</p> </figure> <figure id="fragB" class="paper" aria-labelledby="fragB-title"> <div class="badge" aria-hidden="true" data-frag="B">B</div> <div class="stamp" aria-hidden="true">Fragment B</div> <h3 id="fragB-title">Trade & Property</h3> <p>… the inhabitants thereof respectively, provided that such restrictions shall not extend so far as to prevent the removal of property imported into any state, to any other State of which the Owner is an inhabitant; provided also that <span class="hint">no imposition, duties or restriction</span> shall be laid by any state, on the property of the united states, or either of them …</p> </figure> <figure id="fragC" class="paper" aria-labelledby="fragC-title"> <div class="badge" aria-hidden="true" data-frag="C">C</div> <div class="stamp" aria-hidden="true">Fragment C</div> <h3 id="fragC-title">Foreign Embassies & Titles</h3> <p>No <span class="missing">[paper torn]</span>, shall <span class="hint">send any embassy</span> to, or receive any embassy from, or enter into any conferrence, agreement, alliance, or <span class="hint">treaty</span>, with any King prince or state; nor shall the united states, in congress assembled, or any of them, grant any <span class="hint">title of nobility</span> …</p> </figure> <figure id="fragD" class="paper" aria-labelledby="fragD-title"> <div class="badge" aria-hidden="true" data-frag="D">D</div> <div class="stamp" aria-hidden="true">Fragment D</div> <h3 id="fragD-title">Standing Forces & Militia</h3> <p>No <span class="hint">vessels of war</span> shall be kept up in time of peace, by any state, except such number only, as shall be deemed necessary by <span class="missing">[paper torn]</span> for the defence of such state, or its trade; nor shall any body of forces be kept up, by any state, in time of peace, except such number only as, in the judgment of <span class="missing">[paper torn]</span> assembled, shall be deemed requisite to garrison the forts necessary for the defence of such state; but every state shall always keep up a <span class="hint">well regulated and disciplined militia</span>, sufficiently armed and accoutred, and shall provide and constantly have ready for use, in public stores, a due number of field pieces and tents, and a proper quantity of <span class="hint">arms, ammunition</span>, and camp equipage.</p> </figure> <figure id="fragE" class="paper" aria-labelledby="fragE-title"> <div class="badge" aria-hidden="true" data-frag="E">E</div> <div class="stamp" aria-hidden="true">Fragment E</div> <h3 id="fragE-title">Ratification</h3> <p>Whereas it hath pleased the Great Governor of the World to incline the hearts of the legislatures we respectively represent in congress, to approve of, and to authorize us to ratify the said articles of confederation and perpetual union, Know Ye, that we, the <span class="hint">undersigned delegates</span>, by virtue of the power and authority to us given for that purpose, do, by these presents, in the name and in behalf of our respective constituents, fully and entirely <span class="hint">ratify and confirm</span> …</p> </figure> <figure id="fragF" class="paper" aria-labelledby="fragF-title"> <div class="badge" aria-hidden="true" data-frag="F">F</div> <div class="stamp" aria-hidden="true">Fragment F</div> <h3 id="fragF-title">Supermajority Rule</h3> <p>… shall never engage in a war, nor grant letters of marque and reprisal in time of peace, nor enter into any treaties or alliances, nor coin money, nor regulate the value thereof nor ..ascertain the sums and expenses necessary for the defence and welfare…, or any of them, nor emit bills, nor borrow money on the credit of the united states, nor appropriate money, nor agree upon the number of vessels of war to be built or purchased, or the number of land or sea forces to be raised, nor appoint a commander in chief of the army or navy, unless <span class="hint">nine states assent</span> to the same, nor shall a question on any other point, except for adjourning from day to day, be determined, unless by the votes of a <span class="hint">majority</span> of the <span class="missing">[paper torn]</span> assembled.</p> </figure> </div> </section>
+
+    }
+    @media (min-width: 820px){
+      .fragmentsGrid{ grid-template-columns: 1fr 1fr; }
     }
 
-    header{
-      padding: 32px 16px 8px;
-    }
-    .wrap{ max-width: var(--max); margin: 0 auto; }
-    .title{
-      display:flex; gap:14px; align-items:flex-start; justify-content:space-between; flex-wrap:wrap;
-    }
-    h1{
-      margin:0;
-      font-size: clamp(1.35rem, 2.2vw, 2rem);
-      letter-spacing:.2px;
-    }
-    .subtitle{
-      margin: 10px 0 0;
-      color: var(--muted);
-      max-width: 70ch;
-    }
-
-    main{ padding: 16px 16px 48px; }
-    .card{
-      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
-      border: 1px solid rgba(58,74,122,.7);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
+    details{
+      border: 1px solid rgba(58,74,122,.55);
+      border-radius: var(--radius2);
+      background: rgba(15,25,48,.55);
       overflow:hidden;
     }
-    .card + .card{ margin-top: 16px; }
+    details[open]{
+      border-color: rgba(122,162,255,.6);
+      background: rgba(15,25,48,.7);
+    }
+    summary{
+      cursor:pointer;
+      padding: 12px 12px;
+      list-style:none;
+      font-weight: 750;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    summary::-webkit-details-marker{ display:none; }
+    .fragBadge{
+      flex:0 0 auto;
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      display:grid;
+      place-items:center;
+      background: rgba(122,162,255,.14);
+      border: 1px solid rgba(122,162,255,.55);
+      font-weight: 800;
+    }
+    .fragText{
+      padding: 0 12px 12px;
+      color: var(--text);
+    }
+    .fragText p{
+      margin: 0;
+      color: var(--text);
+    }
+    .fragText .mutedNote{
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: .93rem;
+    }
 
+    .fragControls{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin: 12px 0 0;
+    }
+
+    /* QUIZ */
     .qTop{
       display:flex;
       align-items:flex-start;
@@ -90,8 +121,7 @@
       border: 1px solid rgba(122,162,255,.55);
       display:grid;
       place-items:center;
-      font-weight: 700;
-      color: var(--text);
+      font-weight: 800;
       user-select:none;
     }
     .qHead{ flex: 1 1 auto; }
@@ -105,7 +135,6 @@
       color: var(--muted);
       font-size: .95rem;
     }
-
     .qBody{
       padding: 16px 18px 18px;
       background: rgba(17,27,51,.2);
@@ -144,7 +173,6 @@
       transform: translateY(-1px);
     }
 
-    /* Native controls: keep them native for WCAG; just size and accent */
     input[type="radio"],
     input[type="checkbox"]{
       margin-top: 2px;
@@ -179,7 +207,7 @@
       color: var(--text);
       padding: 10px 12px;
       border-radius: 12px;
-      font-weight: 650;
+      font-weight: 700;
       letter-spacing:.15px;
       cursor: pointer;
       transition: transform .08s ease, background .12s ease, border-color .12s ease;
@@ -211,7 +239,6 @@
       background: rgba(15,25,48,.55);
     }
     .feedback[hidden]{ display:none; }
-    .feedback strong{ display:inline-block; margin-right: 6px; }
     .feedback.good{
       border-color: rgba(47,191,143,.65);
       background: rgba(47,191,143,.10);
@@ -232,17 +259,13 @@
       margin: 0 0 6px;
       font-size: .98rem;
       color: var(--muted);
-      font-weight: 700;
+      font-weight: 800;
     }
     .revealList{
       margin: 0;
       padding-left: 18px;
       display:grid;
       gap: 6px;
-      color: var(--text);
-    }
-    .revealList li{
-      color: var(--text);
     }
     .hintNote{
       margin-top: 10px;
@@ -258,7 +281,6 @@
       border-radius: 10px;
     }
 
-    /* Reduce motion preference */
     @media (prefers-reduced-motion: reduce){
       *{ transition:none !important; scroll-behavior:auto !important; }
       .opt:hover{ transform:none; }
@@ -268,28 +290,105 @@
 </head>
 
 <body>
-  <a class="skip-link" href="#main">Skip to quiz</a>
+  <a class="skip-link" href="#fragments">Skip to fragments</a>
+  <a class="skip-link" href="#quizStart">Skip to quiz</a>
 
   <header>
     <div class="wrap">
-      <div class="title">
-        <div>
-          <h1>Document Fragments Quiz</h1>
-          <p class="subtitle">
-            Answer each question, then use “Check answer” to get feedback. Use “Show next clue” for progressive reveals.
-            (WCAG 2.0-friendly: keyboard navigable, screen-reader readable, and not color-dependent.)
-          </p>
-        </div>
-      </div>
+      <h1>Document Fragments Quiz</h1>
+      <p class="subtitle">
+        Read the fragments first. Then answer the questions below. Use “Show next clue” for progressive reveals.
+        Keyboard accessible and screen-reader friendly.
+      </p>
     </div>
   </header>
 
-  <main id="main" class="wrap" aria-label="Quiz">
-    <!-- Questions render here -->
-    <div id="quiz"></div>
+  <main class="wrap">
+    <!-- FRAGMENTS -->
+    <section id="fragments" class="card" aria-labelledby="fragments_title">
+      <div class="sectionTop">
+        <h2 id="fragments_title">Fragments</h2>
+        <div class="sectionMeta">
+          Open each fragment to read it. You can also use the buttons to expand or collapse all fragments.
+        </div>
+
+        <div class="fragControls" role="group" aria-label="Fragment controls">
+          <button type="button" class="btnSecondary" id="expandAll">Expand all</button>
+          <button type="button" class="btnSecondary" id="collapseAll">Collapse all</button>
+        </div>
+      </div>
+
+      <div class="sectionBody">
+        <div class="fragmentsGrid" id="fragmentsGrid">
+          <!-- Replace these with your actual fragment text -->
+          <details data-frag="A">
+            <summary><span class="fragBadge" aria-hidden="true">A</span>Fragment A</summary>
+            <div class="fragText">
+              <p>[Paste Fragment A text here]</p>
+              <p class="mutedNote">Tip: You can reference “Fragment A” in the questions and clues below.</p>
+            </div>
+          </details>
+
+          <details data-frag="B">
+            <summary><span class="fragBadge" aria-hidden="true">B</span>Fragment B</summary>
+            <div class="fragText">
+              <p>[Paste Fragment B text here]</p>
+              <p class="mutedNote">Tip: You can reference “Fragment B” in the questions and clues below.</p>
+            </div>
+          </details>
+
+          <details data-frag="C">
+            <summary><span class="fragBadge" aria-hidden="true">C</span>Fragment C</summary>
+            <div class="fragText">
+              <p>[Paste Fragment C text here]</p>
+              <p class="mutedNote">Tip: You can reference “Fragment C” in the questions and clues below.</p>
+            </div>
+          </details>
+
+          <details data-frag="D">
+            <summary><span class="fragBadge" aria-hidden="true">D</span>Fragment D</summary>
+            <div class="fragText">
+              <p>[Paste Fragment D text here]</p>
+              <p class="mutedNote">Tip: You can reference “Fragment D” in the questions and clues below.</p>
+            </div>
+          </details>
+
+          <details data-frag="E">
+            <summary><span class="fragBadge" aria-hidden="true">E</span>Fragment E</summary>
+            <div class="fragText">
+              <p>[Paste Fragment E text here]</p>
+              <p class="mutedNote">Tip: You can reference “Fragment E” in the questions and clues below.</p>
+            </div>
+          </details>
+
+          <details data-frag="F">
+            <summary><span class="fragBadge" aria-hidden="true">F</span>Fragment F</summary>
+            <div class="fragText">
+              <p>[Paste Fragment F text here]</p>
+              <p class="mutedNote">Tip: You can reference “Fragment F” in the questions and clues below.</p>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUIZ -->
+    <div id="quizStart" style="height: 1px;"></div>
+    <section class="card" aria-labelledby="quiz_title" style="margin-top:16px;">
+      <div class="sectionTop">
+        <h2 id="quiz_title">Quiz</h2>
+        <div class="sectionMeta">
+          Answer each question, then use “Check answer” for feedback. Use “Reset” to clear answers. Use “Show next clue” for progressive reveals.
+        </div>
+      </div>
+      <div class="sectionBody" style="padding:0;">
+        <div id="quiz"></div>
+      </div>
+    </section>
   </main>
 
   <script>
+    // --- QUIZ DATA ---
     const quizData = [
       {
         id: "q1",
@@ -475,7 +574,7 @@
 
       const optionsHtml = q.options.map((opt, idx) => {
         const inputId = `${q.id}_${idx}`;
-        const name = q.id; // group radios by name
+        const name = q.id;
         return `
           <div class="opt">
             <input
@@ -500,7 +599,7 @@
               <h2 id="${q.id}_title">${escapeHtml(q.title)}</h2>
               ${meta}
               <div id="${q.id}_desc" class="hintNote">
-                Tip: Use Tab/Shift+Tab to move, Space to select. Your selections are announced by screen readers.
+                Tip: Use Tab/Shift+Tab to move, Space to select. For multi-select, choose all that apply.
               </div>
             </div>
           </div>
@@ -517,7 +616,7 @@
                 </div>
 
                 <div class="controls">
-                  <button type="button" class="btnCheck" data-action="check" aria-controls="${q.id}_feedback">
+                  <button type="button" data-action="check" aria-controls="${q.id}_feedback">
                     Check answer
                   </button>
                   <button type="button" class="btnSecondary" data-action="reset" aria-controls="${q.id}_feedback ${q.id}_reveals">
@@ -550,10 +649,10 @@
       `;
     }
 
-    function getSelections(form, q){
-      const inputs = Array.from(form.querySelectorAll("input"));
-      const selected = inputs.filter(i => i.checked).map(i => i.value);
-      return selected;
+    function getSelections(form){
+      return Array.from(form.querySelectorAll("input"))
+        .filter(i => i.checked)
+        .map(i => i.value);
     }
 
     function setsEqual(a, b){
@@ -564,7 +663,7 @@
     }
 
     function checkAnswer(form, q){
-      const selected = getSelections(form, q);
+      const selected = getSelections(form);
       const feedbackEl = form.querySelector(`#${q.id}_feedback`);
 
       if (selected.length === 0){
@@ -585,18 +684,15 @@
       } else {
         feedbackEl.className = "feedback bad";
         feedbackEl.hidden = false;
-
-        // Provide a helpful, not-overly-revealing nudge (still accessible)
         const nudge = (q.type === "multi")
-          ? "Try again: for multi-select questions, the correct set must include all correct choices and no incorrect ones."
+          ? "Try again: for multi-select, the correct set must include all correct choices and no incorrect ones."
           : "Try again: choose the option best supported by the fragments.";
         feedbackEl.innerHTML = `<strong>❌ Not quite.</strong> ${escapeHtml(nudge)}`;
       }
     }
 
     function resetQuestion(form, q){
-      const inputs = Array.from(form.querySelectorAll("input"));
-      inputs.forEach(i => i.checked = false);
+      form.querySelectorAll("input").forEach(i => i.checked = false);
 
       const feedbackEl = form.querySelector(`#${q.id}_feedback`);
       feedbackEl.hidden = true;
@@ -623,7 +719,6 @@
       const revealsWrap = form.querySelector(`#${q.id}_reveals`);
       const list = revealsWrap.querySelector(".revealList");
 
-      // Show reveals container on first reveal
       revealsWrap.hidden = false;
       revealBtn.setAttribute("aria-expanded", "true");
 
@@ -644,10 +739,10 @@
       }
     }
 
-    // Render all questions
+    // Render quiz
     quizEl.innerHTML = quizData.map(renderQuestion).join("");
 
-    // Wire up events
+    // Quiz buttons
     quizEl.addEventListener("click", (e) => {
       const btn = e.target.closest("button");
       if (!btn) return;
@@ -658,15 +753,27 @@
       if (!q) return;
 
       const action = btn.dataset.action;
-
       if (action === "check") checkAnswer(form, q);
       if (action === "reset") resetQuestion(form, q);
       if (action === "reveal") revealNext(form, q);
     });
 
-    // Initialize reveal buttons
+    // Initialize reveal steps
     document.querySelectorAll('button[data-action="reveal"]').forEach(btn => {
       btn.dataset.step = "0";
+    });
+
+    // --- FRAGMENT CONTROLS ---
+    const expandAllBtn = document.getElementById("expandAll");
+    const collapseAllBtn = document.getElementById("collapseAll");
+    const allDetails = () => Array.from(document.querySelectorAll("#fragmentsGrid details"));
+
+    expandAllBtn.addEventListener("click", () => {
+      allDetails().forEach(d => d.open = true);
+    });
+
+    collapseAllBtn.addEventListener("click", () => {
+      allDetails().forEach(d => d.open = false);
     });
   </script>
 </body>
