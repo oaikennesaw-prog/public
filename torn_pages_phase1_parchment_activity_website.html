@@ -2,613 +2,672 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Fragments Quiz</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Document Fragments Quiz</title>
   <style>
     :root{
       --bg:#0b1220;
-      --card:#111a2e;
-      --text:#e8eefc;
-      --muted:#a9b7da;
-      --border:#243252;
-      --good:#39d98a;
-      --bad:#ff6b6b;
+      --panel:#111b33;
+      --panel2:#0f1930;
+      --text:#f5f7ff;
+      --muted:#c6cde6;
+      --border:#3a4a7a;
       --accent:#7aa2ff;
-      --shadow: 0 12px 30px rgba(0,0,0,.35);
+      --good:#2fbf8f;
+      --bad:#e36d6d;
+      --focus:#9bd0ff;
+      --shadow: 0 12px 32px rgba(0,0,0,.35);
+      --radius: 16px;
+      --radius2: 12px;
+      --max: 980px;
     }
-    *{box-sizing:border-box}
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
     body{
       margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
-      background: radial-gradient(1200px 600px at 20% 0%, #142246 0%, var(--bg) 55%) fixed;
-      color:var(--text);
-      line-height:1.35;
-      padding:24px;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background: radial-gradient(1200px 700px at 15% 10%, rgba(122,162,255,.18), transparent 55%),
+                  radial-gradient(900px 600px at 85% 15%, rgba(47,191,143,.12), transparent 55%),
+                  radial-gradient(900px 600px at 80% 90%, rgba(227,109,109,.10), transparent 55%),
+                  var(--bg);
+      color: var(--text);
+      line-height:1.5;
     }
-    .wrap{max-width: 980px; margin: 0 auto;}
+
+    a{ color:var(--accent); }
+    .skip-link{
+      position:absolute; left:-999px; top:auto; width:1px; height:1px; overflow:hidden;
+    }
+    .skip-link:focus{
+      left:16px; top:16px; width:auto; height:auto; padding:10px 12px;
+      background: var(--panel); border: 2px solid var(--focus); border-radius: 10px;
+      z-index: 9999;
+    }
+
     header{
-      display:flex; align-items:flex-start; justify-content:space-between; gap:16px;
-      margin-bottom:16px;
+      padding: 32px 16px 8px;
     }
-    h1{font-size:20px; margin:0; letter-spacing:.2px;}
-    .sub{color:var(--muted); font-size:13px; margin-top:6px;}
-    .card{
-      background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
-      border:1px solid var(--border);
-      border-radius:14px;
-      box-shadow: var(--shadow);
-      padding:18px;
+    .wrap{ max-width: var(--max); margin: 0 auto; }
+    .title{
+      display:flex; gap:14px; align-items:flex-start; justify-content:space-between; flex-wrap:wrap;
     }
-    .row{display:flex; gap:12px; flex-wrap:wrap; align-items:center;}
-    .pill{
-      display:inline-flex; gap:8px; align-items:center;
-      padding:6px 10px; border-radius:999px;
-      border:1px solid var(--border);
-      background: rgba(255,255,255,.03);
+    h1{
+      margin:0;
+      font-size: clamp(1.35rem, 2.2vw, 2rem);
+      letter-spacing:.2px;
+    }
+    .subtitle{
+      margin: 10px 0 0;
       color: var(--muted);
-      font-size:12px;
+      max-width: 70ch;
     }
-    .pill b{color:var(--text); font-weight:600;}
-    .qhead{
-      display:flex; justify-content:space-between; gap:12px; align-items:flex-start;
-      margin-bottom:10px;
+
+    main{ padding: 16px 16px 48px; }
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border: 1px solid rgba(58,74,122,.7);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
     }
-    .qnum{
-      font-size:12px; color:var(--muted); letter-spacing:.12em; text-transform:uppercase;
-    }
-    .prompt{
-      font-size:18px; margin:6px 0 0 0;
-    }
-    .hintline{
-      margin-top:8px;
-      font-size:13px;
-      color:var(--muted);
-    }
-    .choices{margin-top:14px; display:grid; gap:10px;}
-    .choice{
-      border:1px solid var(--border);
-      border-radius:12px;
-      padding:10px 12px;
-      background: rgba(255,255,255,.02);
+    .card + .card{ margin-top: 16px; }
+
+    .qTop{
       display:flex;
-      gap:10px;
       align-items:flex-start;
-      transition: transform .05s ease, border-color .15s ease, background .15s ease;
+      gap: 14px;
+      padding: 18px 18px 10px;
+      border-bottom: 1px solid rgba(58,74,122,.45);
+      background: rgba(17,27,51,.35);
     }
-    .choice:hover{border-color:#34508a; background: rgba(122,162,255,.06);}
-    /* Fix: consistent circles for radios and squares for checkboxes via custom controls */
-    .control{
+    .qNum{
       flex:0 0 auto;
-      width:20px; height:20px;
-      margin-top:2px;
-      border:2px solid #4a5f93;
-      background: rgba(0,0,0,.15);
-      position:relative;
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      background: rgba(122,162,255,.14);
+      border: 1px solid rgba(122,162,255,.55);
+      display:grid;
+      place-items:center;
+      font-weight: 700;
+      color: var(--text);
+      user-select:none;
     }
-    .control.radio{border-radius:999px;}
-    .control.checkbox{border-radius:6px;}
+    .qHead{ flex: 1 1 auto; }
+    .qHead h2{
+      margin: 0;
+      font-size: 1.08rem;
+      letter-spacing:.15px;
+    }
+    .qMeta{
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: .95rem;
+    }
 
-    input[type="radio"], input[type="checkbox"]{
-      /* keep input accessible but hidden */
-      position:absolute;
-      opacity:0;
-      pointer-events:none;
+    .qBody{
+      padding: 16px 18px 18px;
+      background: rgba(17,27,51,.2);
     }
-    .choice label{
-      display:flex; gap:10px; align-items:flex-start; width:100%;
+
+    fieldset{
+      border: 0;
+      padding: 0;
+      margin: 0;
+      min-inline-size: 0;
+    }
+    legend{
+      font-weight: 650;
+      margin-bottom: 10px;
+      padding: 0;
+    }
+
+    .options{
+      display:grid;
+      gap: 10px;
+      margin: 8px 0 0;
+    }
+    .opt{
+      display:flex;
+      gap: 10px;
+      align-items:flex-start;
+      padding: 12px 12px;
+      border-radius: var(--radius2);
+      border: 1px solid rgba(58,74,122,.55);
+      background: rgba(15,25,48,.55);
+      transition: transform .08s ease, border-color .12s ease, background .12s ease;
+    }
+    .opt:hover{
+      border-color: rgba(122,162,255,.65);
+      background: rgba(15,25,48,.75);
+      transform: translateY(-1px);
+    }
+
+    /* Native controls: keep them native for WCAG; just size and accent */
+    input[type="radio"],
+    input[type="checkbox"]{
+      margin-top: 2px;
+      width: 18px;
+      height: 18px;
+      accent-color: var(--accent);
+      flex: 0 0 auto;
+    }
+
+    .opt label{
       cursor:pointer;
-      position:relative;
+      display:block;
+      width:100%;
     }
-    .choice .text{margin-top:1px;}
-    .choice:has(input:focus-visible){
-      outline: 3px solid rgba(122,162,255,.35);
-      outline-offset:2px;
-    }
-    .choice:has(input:checked){
-      border-color:#4f74d6;
-      background: rgba(122,162,255,.10);
-    }
-    /* filled dot for radios */
-    .choice:has(input[type="radio"]:checked) .control.radio::after{
-      content:"";
-      position:absolute; inset:4px;
-      border-radius:999px;
-      background: var(--accent);
-      box-shadow: 0 0 0 3px rgba(122,162,255,.25);
-    }
-    /* checkmark for checkboxes */
-    .choice:has(input[type="checkbox"]:checked) .control.checkbox::after{
-      content:"";
-      position:absolute;
-      left:5px; top:1px;
-      width:6px; height:12px;
-      border: solid var(--accent);
-      border-width: 0 3px 3px 0;
-      transform: rotate(45deg);
+    .optText{
+      display:block;
+      font-size: 1rem;
     }
 
-    .actions{
-      margin-top:16px;
-      display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between;
+    .controls{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items:center;
+      margin-top: 14px;
     }
-    .leftActions, .rightActions{display:flex; gap:10px; flex-wrap:wrap; align-items:center;}
+
     button{
       appearance:none;
-      border:1px solid var(--border);
-      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(122,162,255,.65);
+      background: rgba(122,162,255,.14);
       color: var(--text);
-      border-radius:12px;
-      padding:10px 12px;
-      font-weight:600;
-      cursor:pointer;
-      transition: transform .05s ease, background .15s ease, border-color .15s ease;
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-weight: 650;
+      letter-spacing:.15px;
+      cursor: pointer;
+      transition: transform .08s ease, background .12s ease, border-color .12s ease;
     }
-    button:hover{border-color:#34508a; background: rgba(122,162,255,.06);}
-    button:active{transform: translateY(1px);}
-    button.primary{
-      border-color:#3a5fc8;
-      background: rgba(122,162,255,.16);
-    }
-    button.danger{
-      border-color:#6b2a2a;
-      background: rgba(255,107,107,.10);
+    button:hover{
+      background: rgba(122,162,255,.20);
+      border-color: rgba(122,162,255,.9);
+      transform: translateY(-1px);
     }
     button:disabled{
-      opacity:.5;
-      cursor:not-allowed;
+      opacity: .55;
+      cursor: not-allowed;
+      transform:none;
     }
-    .revealBox{
-      margin-top:14px;
-      border:1px dashed #35508a;
-      border-radius:12px;
-      padding:12px;
-      background: rgba(122,162,255,.06);
+    .btnSecondary{
+      border-color: rgba(198,205,230,.5);
+      background: rgba(198,205,230,.08);
     }
-    .revealTitle{
-      font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted);
-      margin:0 0 8px 0;
+    .btnSecondary:hover{
+      border-color: rgba(198,205,230,.8);
+      background: rgba(198,205,230,.12);
     }
-    .revealItem{
-      margin:0;
-      padding:8px 10px;
-      border-radius:10px;
-      background: rgba(0,0,0,.18);
-      border:1px solid rgba(255,255,255,.06);
-      color: var(--text);
-      font-size:14px;
-    }
+
     .feedback{
-      margin-top:14px;
-      border-radius:12px;
-      padding:12px;
-      border:1px solid var(--border);
-      background: rgba(0,0,0,.18);
+      margin-top: 14px;
+      padding: 12px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(58,74,122,.55);
+      background: rgba(15,25,48,.55);
     }
-    .feedback.good{border-color: rgba(57,217,138,.45); background: rgba(57,217,138,.08);}
-    .feedback.bad{border-color: rgba(255,107,107,.45); background: rgba(255,107,107,.08);}
-    .feedback h3{margin:0 0 6px 0; font-size:14px;}
-    .feedback p{margin:0; color:var(--muted); font-size:13px;}
-    .kicker{color:var(--muted); font-size:12px; margin-top:2px;}
-    footer{margin-top:14px; color:var(--muted); font-size:12px;}
-    .sr-only{
-      position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden;
-      clip:rect(0,0,0,0); white-space:nowrap; border:0;
+    .feedback[hidden]{ display:none; }
+    .feedback strong{ display:inline-block; margin-right: 6px; }
+    .feedback.good{
+      border-color: rgba(47,191,143,.65);
+      background: rgba(47,191,143,.10);
+    }
+    .feedback.bad{
+      border-color: rgba(227,109,109,.65);
+      background: rgba(227,109,109,.10);
+    }
+
+    .reveals{
+      margin-top: 12px;
+      border-radius: 12px;
+      border: 1px dashed rgba(198,205,230,.55);
+      background: rgba(255,255,255,.03);
+      padding: 10px 12px;
+    }
+    .reveals h3{
+      margin: 0 0 6px;
+      font-size: .98rem;
+      color: var(--muted);
+      font-weight: 700;
+    }
+    .revealList{
+      margin: 0;
+      padding-left: 18px;
+      display:grid;
+      gap: 6px;
+      color: var(--text);
+    }
+    .revealList li{
+      color: var(--text);
+    }
+    .hintNote{
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: .93rem;
+    }
+
+    /* Focus visibility (WCAG) */
+    :focus{ outline:none; }
+    :focus-visible{
+      outline: 3px solid var(--focus);
+      outline-offset: 3px;
+      border-radius: 10px;
+    }
+
+    /* Reduce motion preference */
+    @media (prefers-reduced-motion: reduce){
+      *{ transition:none !important; scroll-behavior:auto !important; }
+      .opt:hover{ transform:none; }
+      button:hover{ transform:none; }
     }
   </style>
 </head>
+
 <body>
-  <div class="wrap">
-    <header>
-      <div>
-        <h1>Fragments Quiz</h1>
-        <div class="sub">Numbered questions • consistent radio buttons • progressive reveals (3 levels)</div>
-      </div>
-      <div class="row">
-        <div class="pill"><span>Progress</span> <b id="progressLabel">1 / 8</b></div>
-        <div class="pill"><span>Score</span> <b id="scoreLabel">0</b></div>
-      </div>
-    </header>
+  <a class="skip-link" href="#main">Skip to quiz</a>
 
-    <main class="card" id="app" aria-live="polite"></main>
+  <header>
+    <div class="wrap">
+      <div class="title">
+        <div>
+          <h1>Document Fragments Quiz</h1>
+          <p class="subtitle">
+            Answer each question, then use “Check answer” to get feedback. Use “Show next clue” for progressive reveals.
+            (WCAG 2.0-friendly: keyboard navigable, screen-reader readable, and not color-dependent.)
+          </p>
+        </div>
+      </div>
+    </div>
+  </header>
 
-    <footer>
-      Tip: Edit the question text, choices, and “Re-read Fragment …” lines inside the <code>QUESTIONS</code> array.
-    </footer>
-  </div>
+  <main id="main" class="wrap" aria-label="Quiz">
+    <!-- Questions render here -->
+    <div id="quiz"></div>
+  </main>
 
   <script>
-    // ====== QUESTIONS (paste-friendly, code-ready) ======
-    const QUESTIONS = [
+    const quizData = [
       {
         id: "q1",
+        number: 1,
+        title: "Who was the intended audience?",
         type: "single",
-        prompt: "Who was the intended audience?",
-        choices: [
-          { text: "Delegates of the states in Congress assembled", correct: true },
-          { text: "Representatives directly elected by citizens", correct: false },
-          { text: "Military leaders coordinating defense", correct: false },
-          { text: "Foreign diplomats observing the agreement", correct: false },
-          { text: "A single executive authority", correct: false },
+        correct: ["delegates"],
+        options: [
+          { value: "delegates", text: "Delegates of the states in Congress assembled" },
+          { value: "citizens", text: "Representatives directly elected by citizens" },
+          { value: "military", text: "Military leaders coordinating defense" },
+          { value: "diplomats", text: "Foreign diplomats observing the agreement" },
+          { value: "executive", text: "A single executive authority" }
         ],
         reveals: [
           "Who is described as having authority to act in this system?",
           "Is power given to individuals, or to political units?",
           "Re-read Fragment E, which explains how Congress is formed and who participates."
-        ]
+        ],
+        correctMessage: "Correct: the document addresses delegates of the states in Congress assembled."
       },
       {
         id: "q2",
+        number: 2,
+        title: "What problem(s) was this document trying to solve?",
+        meta: "(Select all that apply)",
         type: "multi",
-        prompt: "What problem(s) was this document trying to solve?",
-        subtitle: "(Select all that apply)",
-        choices: [
-          { text: "Lack of unity among states / securing interstate rights", correct: true },
-          { text: "Creating a uniform national economy", correct: false },
-          { text: "Preventing internal rebellions", correct: false },
-          { text: "Avoiding all foreign involvement", correct: false },
-          { text: "Enforcing laws within states", correct: false },
+        correct: ["unity"],
+        options: [
+          { value: "unity", text: "Lack of unity among states / securing interstate rights" },
+          { value: "economy", text: "Creating a uniform national economy" },
+          { value: "rebellions", text: "Preventing internal rebellions" },
+          { value: "foreign", text: "Avoiding all foreign involvement" },
+          { value: "enforce_states", text: "Enforcing laws within states" }
         ],
         reveals: [
           "What conflicts might arise if states acted completely independently?",
           "Notice repeated rules about treatment across state lines.",
           "Re-read Fragments A and B, which describe rights and trade between states."
-        ]
+        ],
+        correctMessage: "Correct: the document focuses on unity among states and interstate rights/treatment."
       },
       {
         id: "q3",
+        number: 3,
+        title: "What powers are clearly granted in this document?",
         type: "single",
-        prompt: "What powers are clearly granted in this document?",
-        choices: [
-          { text: "Coordination among states", correct: true },
-          { text: "Authority to tax individuals directly", correct: false },
-          { text: "Power to enforce laws within states", correct: false },
-          { text: "Regulation of internal state commerce", correct: false },
-          { text: "Command of a permanent national army", correct: false },
+        correct: ["coordination"],
+        options: [
+          { value: "coordination", text: "Coordination among states" },
+          { value: "tax", text: "Authority to tax individuals directly" },
+          { value: "enforce", text: "Power to enforce laws within states" },
+          { value: "internal_commerce", text: "Regulation of internal state commerce" },
+          { value: "army", text: "Command of a permanent national army" }
         ],
         reveals: [
           "Focus on what the document explicitly allows—not what it discusses.",
           "Does the text describe enforcement or cooperation?",
           "Re-read Fragments E and F, focusing on what Congress can actually do."
-        ]
+        ],
+        correctMessage: "Correct: the document grants a coordination framework among states."
       },
       {
         id: "q4",
+        number: 4,
+        title: "What problems does the document seem most concerned with?",
+        meta: "(Select all that apply)",
         type: "multi",
-        prompt: "What problems does the document seem most concerned with?",
-        subtitle: "(Select all that apply)",
-        choices: [
-          { text: "Lack of unity between states", correct: true },
-          { text: "Collective defense", correct: true },
-          { text: "Weak central authority", correct: true },
-          { text: "Protecting individual civil liberties", correct: false },
-          { text: "Promoting economic growth", correct: false },
-          { text: "Encouraging popular participation", correct: false },
-          { text: "Expanding national territory", correct: false },
+        correct: ["unity_between_states", "collective_defense", "weak_central"],
+        options: [
+          { value: "unity_between_states", text: "Lack of unity between states" },
+          { value: "collective_defense", text: "Collective defense" },
+          { value: "weak_central", text: "Weak central authority" },
+          { value: "civil_liberties", text: "Protecting individual civil liberties" },
+          { value: "economic_growth", text: "Promoting economic growth" },
+          { value: "popular_participation", text: "Encouraging popular participation" },
+          { value: "territory", text: "Expanding national territory" }
         ],
         reveals: [
           "Which concerns appear in more than one fragment?",
           "Which problems require cooperation rather than command?",
           "Re-read Fragments A, B, D, and F and look for repeated themes."
-        ]
+        ],
+        correctMessage: "Correct: the text repeatedly emphasizes unity, collective defense, and a limited/weak central authority."
       },
       {
         id: "q5",
+        number: 5,
+        title: "Why might humans have created it this way?",
+        meta: "(Select all that apply)",
         type: "multi",
-        prompt: "Why might humans have created it this way?",
-        subtitle: "(Select all that apply)",
-        choices: [
-          { text: "Preserve state sovereignty while coordinating defense & diplomacy", correct: true },
-          { text: "Prefer citizen militias over standing armies", correct: true },
-          { text: "Facilitate cross-state movement of people/property without new duties", correct: true },
-          { text: "Use supermajority rules to protect minority states on major actions", correct: true },
-          { text: "Enable rapid national decision-making", correct: false },
-          { text: "Establish a strong centralized executive", correct: false },
-          { text: "Centralize economic regulation", correct: false },
-          { text: "Encourage national unity through authority", correct: false },
+        correct: ["state_sovereignty", "militias", "movement", "supermajority"],
+        options: [
+          { value: "state_sovereignty", text: "Preserve state sovereignty while coordinating defense & diplomacy" },
+          { value: "militias", text: "Prefer citizen militias over standing armies" },
+          { value: "movement", text: "Facilitate cross-state movement of people/property without new duties" },
+          { value: "supermajority", text: "Use supermajority rules to protect minority states on major actions" },
+          { value: "rapid", text: "Enable rapid national decision-making" },
+          { value: "executive", text: "Establish a strong centralized executive" },
+          { value: "centralize_econ", text: "Centralize economic regulation" },
+          { value: "unity_authority", text: "Encourage national unity through authority" }
         ],
         reveals: [
           "What does this system make deliberately difficult?",
           "Which rules slow decisions or limit power?",
           "Re-read Fragments D and F (military limits and voting rules)."
-        ]
+        ],
+        correctMessage: "Correct: the structure prioritizes state sovereignty, limits standing armies, eases interstate movement, and uses supermajority safeguards."
       },
       {
         id: "q6",
+        number: 6,
+        title: "Based on the text alone, what fears or experiences shaped the authors?",
         type: "single",
-        prompt: "Based on the text alone, what fears or experiences shaped the authors?",
-        choices: [
-          { text: "Fear of centralized tyranny", correct: true },
-          { text: "Distrust of citizen participation", correct: false },
-          { text: "Fear of economic competition", correct: false },
-          { text: "Desire for long-term political permanence", correct: false },
-          { text: "Anxiety over cultural diversity", correct: false },
+        correct: ["tyranny"],
+        options: [
+          { value: "tyranny", text: "Fear of centralized tyranny" },
+          { value: "participation", text: "Distrust of citizen participation" },
+          { value: "competition", text: "Fear of economic competition" },
+          { value: "permanence", text: "Desire for long-term political permanence" },
+          { value: "diversity", text: "Anxiety over cultural diversity" }
         ],
         reveals: [
           "What type of power is most restricted in this document?",
           "Why might concentrated authority be treated cautiously?",
           "Re-read Fragments D and E, especially limits on military and enforcement power."
-        ]
+        ],
+        correctMessage: "Correct: the text strongly limits centralized authority, reflecting fear of tyranny."
       },
       {
         id: "q7",
+        number: 7,
+        title: "What does this document reveal these beings fear most?",
         type: "single",
-        prompt: "What does this document reveal these beings fear most?",
-        choices: [
-          { text: "Fragmentation and disunity", correct: true },
-          { text: "Too much popular participation", correct: false },
-          { text: "Economic stagnation", correct: false },
-          { text: "Foreign cultural influence", correct: false },
-          { text: "Regional inequality", correct: false },
+        correct: ["disunity"],
+        options: [
+          { value: "disunity", text: "Fragmentation and disunity" },
+          { value: "popular", text: "Too much popular participation" },
+          { value: "stagnation", text: "Economic stagnation" },
+          { value: "cultural", text: "Foreign cultural influence" },
+          { value: "inequality", text: "Regional inequality" }
         ],
         reveals: [
           "What outcome would make this agreement unnecessary?",
           "Why repeat rules about cooperation across states?",
           "Re-read Fragments A, B, and F, noting unity language."
-        ]
+        ],
+        correctMessage: "Correct: the repeated cooperation/unity rules suggest the core fear is fragmentation."
       },
       {
         id: "q8",
+        number: 8,
+        title: "Based on the rules in this document, what major problem is most likely to emerge over time?",
         type: "single",
-        prompt: "Based on the rules in this document, what major problem is most likely to emerge over time?",
-        choices: [
-          { text: "The national government will struggle to act quickly or decisively", correct: true },
-          { text: "States will lose their independence to the central government", correct: false },
-          { text: "Citizens will gain too much direct political power", correct: false },
-          { text: "The military will become too powerful and dominate politics", correct: false },
-          { text: "Economic growth will be tightly controlled by Congress", correct: false },
+        correct: ["slow_action"],
+        options: [
+          { value: "slow_action", text: "The national government will struggle to act quickly or decisively" },
+          { value: "lose_independence", text: "States will lose their independence to the central government" },
+          { value: "too_much_citizen_power", text: "Citizens will gain too much direct political power" },
+          { value: "military_dominates", text: "The military will become too powerful and dominate politics" },
+          { value: "econ_controlled", text: "Economic growth will be tightly controlled by Congress" }
         ],
         reveals: [
-          "What does this system make deliberately difficult to do?",
-          "Look for rules that require large agreement before major action can happen.",
-          "Re-read Fragments F (voting thresholds) and E (structure of Congress) and consider what happens when states disagree."
+          "Look for rules that require broad agreement before major actions can occur.",
+          "Which design features slow decisions instead of speeding them up?",
+          "Re-read Fragment F and note the voting thresholds and limits on centralized enforcement."
         ],
-        notes:
-          "Wrong answers are tempting because they project later Constitution-era fears backward, confuse limits on power with expansion of power, and assume outcomes not supported by enforcement rules."
+        correctMessage: "Correct: supermajority thresholds and limited enforcement make quick decisive national action difficult."
       }
     ];
 
-    // ====== APP STATE ======
-    let idx = 0;
-    let score = 0;
-    const answered = new Array(QUESTIONS.length).fill(false);
-    const revealCountByQ = new Array(QUESTIONS.length).fill(0); // 0..3
-    const userAnswers = new Array(QUESTIONS.length).fill(null); // Set() for multi, string index for single
+    const quizEl = document.getElementById("quiz");
 
-    // ====== HELPERS ======
-    const el = (tag, attrs = {}, ...children) => {
-      const node = document.createElement(tag);
-      for (const [k,v] of Object.entries(attrs)) {
-        if (k === "class") node.className = v;
-        else if (k === "html") node.innerHTML = v;
-        else if (k.startsWith("on") && typeof v === "function") node.addEventListener(k.slice(2), v);
-        else node.setAttribute(k, v);
-      }
-      for (const c of children) {
-        if (c == null) continue;
-        node.appendChild(typeof c === "string" ? document.createTextNode(c) : c);
-      }
-      return node;
-    };
-
-    function updateTopBar(){
-      document.getElementById("progressLabel").textContent = `${idx+1} / ${QUESTIONS.length}`;
-      document.getElementById("scoreLabel").textContent = `${score}`;
+    function escapeHtml(str){
+      return str.replace(/[&<>"']/g, (m) => ({
+        "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"
+      }[m]));
     }
 
-    function getCorrectSet(q){
-      const s = new Set();
-      q.choices.forEach((c,i)=>{ if (c.correct) s.add(String(i)); });
-      return s;
+    function renderQuestion(q){
+      const meta = q.meta ? `<div class="qMeta">${escapeHtml(q.meta)}</div>` : "";
+      const inputType = q.type === "multi" ? "checkbox" : "radio";
+
+      const optionsHtml = q.options.map((opt, idx) => {
+        const inputId = `${q.id}_${idx}`;
+        const name = q.id; // group radios by name
+        return `
+          <div class="opt">
+            <input
+              id="${inputId}"
+              type="${inputType}"
+              name="${name}"
+              value="${escapeHtml(opt.value)}"
+              aria-describedby="${q.id}_desc"
+            />
+            <label for="${inputId}">
+              <span class="optText">${escapeHtml(opt.text)}</span>
+            </label>
+          </div>
+        `;
+      }).join("");
+
+      return `
+        <section class="card" aria-labelledby="${q.id}_title">
+          <div class="qTop">
+            <div class="qNum" aria-hidden="true">${q.number}</div>
+            <div class="qHead">
+              <h2 id="${q.id}_title">${escapeHtml(q.title)}</h2>
+              ${meta}
+              <div id="${q.id}_desc" class="hintNote">
+                Tip: Use Tab/Shift+Tab to move, Space to select. Your selections are announced by screen readers.
+              </div>
+            </div>
+          </div>
+
+          <div class="qBody">
+            <form data-qid="${q.id}">
+              <fieldset>
+                <legend class="sr-only" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;">
+                  ${escapeHtml(q.title)}
+                </legend>
+
+                <div class="options">
+                  ${optionsHtml}
+                </div>
+
+                <div class="controls">
+                  <button type="button" class="btnCheck" data-action="check" aria-controls="${q.id}_feedback">
+                    Check answer
+                  </button>
+                  <button type="button" class="btnSecondary" data-action="reset" aria-controls="${q.id}_feedback ${q.id}_reveals">
+                    Reset
+                  </button>
+                  <button type="button"
+                          class="btnSecondary"
+                          data-action="reveal"
+                          aria-expanded="false"
+                          aria-controls="${q.id}_reveals">
+                    Show next clue
+                  </button>
+                </div>
+
+                <div id="${q.id}_feedback"
+                     class="feedback"
+                     role="status"
+                     aria-live="polite"
+                     aria-atomic="true"
+                     hidden></div>
+
+                <div id="${q.id}_reveals" class="reveals" hidden>
+                  <h3>Progressive reveals</h3>
+                  <ol class="revealList" aria-label="Clues revealed so far"></ol>
+                </div>
+              </fieldset>
+            </form>
+          </div>
+        </section>
+      `;
     }
 
-    function setsEqual(a,b){
-      if (a.size !== b.size) return false;
-      for (const x of a) if (!b.has(x)) return false;
+    function getSelections(form, q){
+      const inputs = Array.from(form.querySelectorAll("input"));
+      const selected = inputs.filter(i => i.checked).map(i => i.value);
+      return selected;
+    }
+
+    function setsEqual(a, b){
+      if (a.length !== b.length) return false;
+      const sa = new Set(a);
+      for (const x of b) if (!sa.has(x)) return false;
       return true;
     }
 
-    function currentSelection(q){
-      const name = q.id;
-      if (q.type === "single") {
-        const checked = document.querySelector(`input[name="${name}"]:checked`);
-        return checked ? checked.value : null;
-      } else {
-        const checks = document.querySelectorAll(`input[name="${name}"]:checked`);
-        const s = new Set();
-        checks.forEach(n => s.add(n.value));
-        return s;
-      }
-    }
+    function checkAnswer(form, q){
+      const selected = getSelections(form, q);
+      const feedbackEl = form.querySelector(`#${q.id}_feedback`);
 
-    function render(){
-      updateTopBar();
-      const app = document.getElementById("app");
-      app.innerHTML = "";
-
-      const q = QUESTIONS[idx];
-
-      // Header
-      const qHeadLeft = el("div", {},
-        el("div", { class: "qnum" }, `Question ${idx+1}`),
-        el("div", { class: "prompt" }, q.prompt),
-        q.subtitle ? el("div", { class: "hintline" }, q.subtitle) : null
-      );
-
-      const qHeadRight = el("div", { class: "row" },
-        el("div", { class: "pill" }, "Type: ", el("b", {}, q.type === "multi" ? "Select all" : "Single choice"))
-      );
-
-      app.appendChild(el("div", { class: "qhead" }, qHeadLeft, qHeadRight));
-
-      // Choices
-      const choices = el("div", { class: "choices" });
-      const inputType = q.type === "multi" ? "checkbox" : "radio";
-
-      q.choices.forEach((c,i)=>{
-        const value = String(i);
-        const inputId = `${q.id}_${i}`;
-
-        // input
-        const input = el("input", { type: inputType, name: q.id, id: inputId, value });
-
-        // restore previous selection
-        const prev = userAnswers[idx];
-        if (q.type === "single" && typeof prev === "string" && prev === value) input.checked = true;
-        if (q.type === "multi" && prev instanceof Set && prev.has(value)) input.checked = true;
-
-        // custom control
-        const control = el("span", { class: `control ${inputType === "radio" ? "radio" : "checkbox"}`, "aria-hidden": "true" });
-
-        const label = el("label", { for: inputId },
-          control,
-          input,
-          el("div", { class: "text" }, c.text)
-        );
-
-        choices.appendChild(el("div", { class: "choice" }, label));
-      });
-
-      app.appendChild(choices);
-
-      // Reveals (progressive)
-      const revealShown = revealCountByQ[idx];
-      if (revealShown > 0){
-        const box = el("div", { class: "revealBox" },
-          el("div", { class: "revealTitle" }, "Progressive reveals")
-        );
-        for (let r = 0; r < revealShown; r++){
-          box.appendChild(el("p", { class: "revealItem" }, `Reveal ${r+1}: ${q.reveals[r]}`));
-        }
-        app.appendChild(box);
-      }
-
-      // Feedback (after answering)
-      if (answered[idx]) {
-        const correctSet = getCorrectSet(q);
-        const ua = userAnswers[idx];
-
-        let isCorrect = false;
-        if (q.type === "single") isCorrect = (typeof ua === "string") && correctSet.has(ua) && correctSet.size === 1;
-        else isCorrect = (ua instanceof Set) && setsEqual(ua, correctSet);
-
-        const fb = el("div", { class: `feedback ${isCorrect ? "good" : "bad"}` },
-          el("h3", {}, isCorrect ? "✅ Correct" : "❌ Not quite"),
-        );
-
-        if (!isCorrect) {
-          // show correct answer(s)
-          const correctTexts = [];
-          q.choices.forEach((c,i)=>{ if (c.correct) correctTexts.push(c.text); });
-          fb.appendChild(el("p", {}, `Correct answer${correctTexts.length>1 ? "s" : ""}: `, correctTexts.join(" • ")));
-        } else {
-          fb.appendChild(el("p", {}, "Nice — your selection matches the key."));
-        }
-
-        if (q.notes) {
-          fb.appendChild(el("div", { class: "kicker" }, q.notes));
-        }
-
-        app.appendChild(fb);
-      }
-
-      // Actions
-      const submitBtn = el("button", {
-        class: "primary",
-        onClick: () => onSubmit()
-      }, answered[idx] ? "Answered" : "Submit");
-
-      submitBtn.disabled = answered[idx];
-
-      const revealBtn = el("button", {
-        onClick: () => onReveal()
-      }, revealCountByQ[idx] >= 3 ? "All reveals shown" : "Reveal next clue");
-
-      revealBtn.disabled = revealCountByQ[idx] >= 3;
-
-      const prevBtn = el("button", {
-        onClick: () => { idx = Math.max(0, idx-1); render(); }
-      }, "← Previous");
-
-      prevBtn.disabled = idx === 0;
-
-      const nextBtn = el("button", {
-        onClick: () => { idx = Math.min(QUESTIONS.length-1, idx+1); render(); }
-      }, "Next →");
-
-      // lock "Next" until answered, except allow review if later questions already reached
-      nextBtn.disabled = (idx < QUESTIONS.length - 1) && !answered[idx];
-
-      const resetBtn = el("button", { class:"danger", onClick: () => onReset() }, "Reset quiz");
-
-      const leftActions = el("div", { class:"leftActions" }, prevBtn, nextBtn);
-      const rightActions = el("div", { class:"rightActions" }, revealBtn, submitBtn, resetBtn);
-
-      app.appendChild(el("div", { class:"actions" }, leftActions, rightActions));
-
-      // Persist selection as user clicks (so navigation doesn't lose it)
-      app.querySelectorAll(`input[name="${q.id}"]`).forEach(inp=>{
-        inp.addEventListener("change", () => {
-          const sel = currentSelection(q);
-          userAnswers[idx] = sel;
-        });
-      });
-    }
-
-    function onReveal(){
-      const q = QUESTIONS[idx];
-      const cur = revealCountByQ[idx];
-      revealCountByQ[idx] = Math.min(3, cur + 1);
-      render();
-    }
-
-    function onSubmit(){
-      const q = QUESTIONS[idx];
-      const sel = currentSelection(q);
-
-      // Require a selection before submitting
-      if (q.type === "single" && sel === null) {
-        alert("Choose an answer before submitting.");
-        return;
-      }
-      if (q.type === "multi" && (sel == null || sel.size === 0)) {
-        alert("Choose at least one option before submitting.");
+      if (selected.length === 0){
+        feedbackEl.className = "feedback bad";
+        feedbackEl.hidden = false;
+        feedbackEl.innerHTML = `<strong>Not yet:</strong> Please select an answer${q.type === "multi" ? " (one or more)" : ""} before checking.`;
         return;
       }
 
-      userAnswers[idx] = sel;
+      const isCorrect = (q.type === "multi")
+        ? setsEqual([...selected].sort(), [...q.correct].sort())
+        : (selected.length === 1 && selected[0] === q.correct[0]);
 
-      const correctSet = getCorrectSet(q);
-      let isCorrect = false;
-
-      if (q.type === "single") {
-        isCorrect = correctSet.has(sel) && correctSet.size === 1;
+      if (isCorrect){
+        feedbackEl.className = "feedback good";
+        feedbackEl.hidden = false;
+        feedbackEl.innerHTML = `<strong>✅ Correct.</strong> ${escapeHtml(q.correctMessage)}`;
       } else {
-        isCorrect = setsEqual(sel, correctSet);
-      }
+        feedbackEl.className = "feedback bad";
+        feedbackEl.hidden = false;
 
-      if (!answered[idx]) {
-        answered[idx] = true;
-        if (isCorrect) score += 1;
+        // Provide a helpful, not-overly-revealing nudge (still accessible)
+        const nudge = (q.type === "multi")
+          ? "Try again: for multi-select questions, the correct set must include all correct choices and no incorrect ones."
+          : "Try again: choose the option best supported by the fragments.";
+        feedbackEl.innerHTML = `<strong>❌ Not quite.</strong> ${escapeHtml(nudge)}`;
       }
-
-      // auto-advance if correct (optional); keeping gentle: advance on any submit if not last
-      if (idx < QUESTIONS.length - 1) {
-        idx += 1;
-      }
-      render();
     }
 
-    function onReset(){
-      idx = 0;
-      score = 0;
-      for (let i=0; i<answered.length; i++) answered[i] = false;
-      for (let i=0; i<revealCountByQ.length; i++) revealCountByQ[i] = 0;
-      for (let i=0; i<userAnswers.length; i++) userAnswers[i] = null;
-      render();
+    function resetQuestion(form, q){
+      const inputs = Array.from(form.querySelectorAll("input"));
+      inputs.forEach(i => i.checked = false);
+
+      const feedbackEl = form.querySelector(`#${q.id}_feedback`);
+      feedbackEl.hidden = true;
+      feedbackEl.textContent = "";
+      feedbackEl.className = "feedback";
+
+      const revealsWrap = form.querySelector(`#${q.id}_reveals`);
+      const list = revealsWrap.querySelector(".revealList");
+      list.innerHTML = "";
+      revealsWrap.hidden = true;
+
+      const revealBtn = form.querySelector(`button[data-action="reveal"]`);
+      revealBtn.dataset.step = "0";
+      revealBtn.disabled = false;
+      revealBtn.setAttribute("aria-expanded", "false");
+      revealBtn.textContent = "Show next clue";
     }
 
-    // boot
-    render();
+    function revealNext(form, q){
+      const revealBtn = form.querySelector(`button[data-action="reveal"]`);
+      const step = Number(revealBtn.dataset.step || "0");
+      const next = q.reveals[step];
+
+      const revealsWrap = form.querySelector(`#${q.id}_reveals`);
+      const list = revealsWrap.querySelector(".revealList");
+
+      // Show reveals container on first reveal
+      revealsWrap.hidden = false;
+      revealBtn.setAttribute("aria-expanded", "true");
+
+      if (next){
+        const li = document.createElement("li");
+        li.textContent = next;
+        list.appendChild(li);
+
+        revealBtn.dataset.step = String(step + 1);
+
+        if (step + 1 >= q.reveals.length){
+          revealBtn.disabled = true;
+          revealBtn.textContent = "All clues shown";
+        }
+      } else {
+        revealBtn.disabled = true;
+        revealBtn.textContent = "All clues shown";
+      }
+    }
+
+    // Render all questions
+    quizEl.innerHTML = quizData.map(renderQuestion).join("");
+
+    // Wire up events
+    quizEl.addEventListener("click", (e) => {
+      const btn = e.target.closest("button");
+      if (!btn) return;
+
+      const form = btn.closest("form");
+      const qid = form?.dataset?.qid;
+      const q = quizData.find(x => x.id === qid);
+      if (!q) return;
+
+      const action = btn.dataset.action;
+
+      if (action === "check") checkAnswer(form, q);
+      if (action === "reset") resetQuestion(form, q);
+      if (action === "reveal") revealNext(form, q);
+    });
+
+    // Initialize reveal buttons
+    document.querySelectorAll('button[data-action="reveal"]').forEach(btn => {
+      btn.dataset.step = "0";
+    });
   </script>
 </body>
 </html>
